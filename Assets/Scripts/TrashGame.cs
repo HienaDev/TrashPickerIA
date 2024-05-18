@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class TrashGame : MonoBehaviour
 {
@@ -45,11 +41,15 @@ public class TrashGame : MonoBehaviour
     [SerializeField, Header("[UI]")] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI movesUI;
     [SerializeField] private GameObject gameOverUI;
-    [SerializeField] private GameObject playAgainButton;
+
+    private ButtonsManager buttonsManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Get the buttons manager
+        buttonsManager = FindObjectOfType<ButtonsManager>();
+
         player = null;
 
         // Get the border size
@@ -67,15 +67,12 @@ public class TrashGame : MonoBehaviour
                 gridGameObjects[i, j] = null;
             }
         }
-
-        StartGame();
     }
 
-    public void StartGame()
+    public void StartGameHuman()
     {
         // Restart all variables and objects
         gameOverUI.SetActive(false);
-        playAgainButton.SetActive(false);
         score = 0;
         movesMade = 0;
         scoreUI.text = $"Score: {score}";
@@ -178,7 +175,7 @@ public class TrashGame : MonoBehaviour
         {
             gameOverUI.SetActive(true);
             gameOverUI.GetComponent<TextMeshProUGUI>().text = $"GAME OVER\n\nScore:\n{score}";
-            playAgainButton.SetActive(true);
+            buttonsManager.TurnOnButtons();
             return true;
         }
         return false;
