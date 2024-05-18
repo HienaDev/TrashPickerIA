@@ -5,31 +5,24 @@ using UnityEngine;
 public class InstatiateGrid : MonoBehaviour
 {
     private TrashGame trashScript;
-    private int x;
-    private int y;
 
     [SerializeField] private GameObject gridPrefab;
  
-    //-160 -160
-
-    // Start is called before the first frame update
     void Start()
     {
 
         trashScript = FindObjectOfType<TrashGame>();
 
-        x = 16;
-        y = 16;
-
-        //Debug.Log(Screen.width);
-        //Debug.Log(Screen.height);
-
+        // Instantiates grid tiles for the map layout
+        // Each tile is 32x32 so we instantiate them by
+        // that interval, and center them by adding 16 to its
+        // coordinates
         for (int i = 0; i < trashScript.GridSize; i++)
         {
             for (int j = 0; j < trashScript.GridSize; j++)
             {
                 GameObject temp = Instantiate(gridPrefab, transform);
-                temp.transform.position = new Vector2(x + i * 32, y + j * 32);
+                temp.transform.position = new Vector2(16 + (i + 1) * 32, 16 + (j + 1) * 32);
             }
         }
     }

@@ -7,30 +7,41 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class TrashGame : MonoBehaviour
 {
-
-    [SerializeField, Tooltip("A number above 10 will be offscreen"), Header("[CONFIGURATIONS]")] private int gridSize;
+    // These 3 values are available for change in the inspector, the size of the grid
+    // the max amount of moves and the chance for trash to spawn
+    [Tooltip("A number above 8 will have tiles offscren"), Header("[CONFIGURATIONS]"),
+     SerializeField]
+    private int gridSize;
     [SerializeField] private int maxMoves;
     [SerializeField, Range(0, 100)] private int chanceForTrash;
     public int GridSize => gridSize;
+    // The size of the grid + 2 to account for the walls
+    private int borderSize;
 
+    // Keeps the states of the grid, 0 for empty, 1 for wall and 2 for trash
     private int[,] grid;
     public int[,] Grid => grid;
 
+    // The prefabs to instantiate
     [SerializeField, Header("[PREFABS]")] private GameObject robot;
-    private bool emptyPlaceForPlayer = false;
-
     [SerializeField] private GameObject wall;
     [SerializeField] private GameObject trash;
+
+    // Keeps the a grid with the objects inside
     private GameObject[,] gridGameObjects;
     public GameObject[,] GridGameObjects => gridGameObjects;
+    // Keeps the player object
     private GameObject player;
 
+    // The initial position for the player
     private Vector2Int initialPlayerPosition;
     public Vector2Int InitialPlayerPosition => initialPlayerPosition;
 
+    // The score and moves for the UI
     private int score;
     private int movesMade;
 
+    // The UI objects
     [SerializeField, Header("[UI]")] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI movesUI;
     [SerializeField] private GameObject gameOverUI;
@@ -40,12 +51,18 @@ public class TrashGame : MonoBehaviour
     void Start()
     {
         player = null;
-        gridGameObjects = new GameObject[gridSize, gridSize];
-        grid = new int[gridSize, gridSize];
 
-        for (int i = 0; i < gridSize; i++)
+        // Get the border size
+        borderSize = gridSize + 2;
+
+        // Initalize the arrays
+        gridGameObjects = new GameObject[borderSize, borderSize];
+        grid = new int[borderSize, borderSize];
+
+        // Fill objects with null to avoid errors
+        for (int i = 0; i < borderSize; i++)
         {
-            for (int j = 0; j < gridSize; j++)
+            for (int j = 0; j < borderSize; j++)
             {
                 gridGameObjects[i, j] = null;
             }
@@ -56,94 +73,103 @@ public class TrashGame : MonoBehaviour
 
     public void StartGame()
     {
+        // Restart all variables and objects
         gameOverUI.SetActive(false);
         playAgainButton.SetActive(false);
         score = 0;
         movesMade = 0;
-        emptyPlaceForPlayer = false;
         scoreUI.text = $"Score: {score}";
         movesUI.text = $"Moves: {movesMade}/{maxMoves}";
 
+        // Destroy all objects from a previous run
         foreach (GameObject objects in gridGameObjects)
         {
-            if(objects != null)
+            if (objects != null)
             {
                 Destroy(objects);
             }
         }
 
-        for (int i = 0; i < gridSize; i++)
+        // Reiniatilize the game object grid in case this isn't the first run
+        for (int i = 0; i < borderSize; i++)
         {
-            for (int j = 0; j < gridSize; j++)
+            for (int j = 0; j < borderSize; j++)
             {
                 gridGameObjects[i, j] = null;
             }
         }
-        for (int i = 0; i < gridSize; i++)
-        {
-            for (int j = 0; j < gridSize; j++)
-            {
-                grid[i, j] = Random.Range(0, 100) < chanceForTrash ? 2 : 0;
 
-                if (grid[i, j] == 1)
+        // Fill the grid with the possible states 0, 1 and 2
+        // and fill the object grid with the corresponding objects
+        for (int i = 0; i < borderSize; i++)
+        {
+            for (int j = 0; j < borderSize; j++)
+            {
+                // Put walls if we are on the border
+                if (i == 0 || i == borderSize - 1 || j == 0 || j == borderSize - 1)
                 {
+                    grid[i, j] = 1;
                     GameObject fixedObject = Instantiate(wall, transform);
                     fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
                     gridGameObjects[i, j] = fixedObject;
                 }
-                if (grid[i, j] == 2)
+                // Spawn trash or leave tile empty based on chance chosen on inspector
+                else
                 {
-                    GameObject fixedObject = Instantiate(trash, transform);
-                    fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
-                    gridGameObjects[i, j] = fixedObject;
+                    grid[i, j] = Random.Range(0, 100) < chanceForTrash ? 2 : 0;
+
+                    if (grid[i, j] == 2)
+                    {
+                        GameObject fixedObject = Instantiate(trash, transform);
+                        fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
+                        gridGameObjects[i, j] = fixedObject;
+                    }
                 }
-
-
-
             }
         }
 
+        // DEBUGGING of grid
         string gridDisplay = "";
-        for (int j = gridSize - 1; j >= 0; j--)
+        for (int j = borderSize - 1; j >= 0; j--)
         {
             gridDisplay += "|";
-            for (int i = 0; i < gridSize; i++)
+            for (int i = 0; i < borderSize; i++)
             {
                 gridDisplay += grid[i, j];
                 gridDisplay += ", ";
             }
             gridDisplay += "|\n";
         }
-
         Debug.Log(gridDisplay);
 
-        initialPlayerPosition = Vector2Int.zero;
-
-        do
-        {
-            initialPlayerPosition.x = Random.Range(0, gridSize);
-            initialPlayerPosition.y = Random.Range(0, gridSize);
-
-            if (grid[initialPlayerPosition.x, initialPlayerPosition.y] != 1)
-            {
-                emptyPlaceForPlayer = true;
-            }
-        } while (!emptyPlaceForPlayer);
-
-        if(player != null)
+        // If there's a player from a previous run destroy iy
+        if (player != null)
             Destroy(player);
 
+        // Get random player position to start on that isn't on the borders
+        initialPlayerPosition.x = Random.Range(1, gridSize + 1);
+        initialPlayerPosition.y = Random.Range(1, gridSize + 1);
+
+        // Instantite player at random position
         player = Instantiate(robot);
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
     }
 
+    /// <summary>
+    /// Add score value and change score UI
+    /// </summary>
+    /// <param name="value">The value to be added to the score</param>
     public void AddScore(int value)
-    { 
+    {
         score += value;
         scoreUI.text = $"Score: {score}";
         Debug.Log("Added " + value + " to score");
     }
 
+    /// <summary>
+    /// Add +1 to amount of moves and updates MoveUI
+    /// </summary>
+    /// <returns>returns true if we've hit the max amout of moves</returns>
     public bool AddMove()
     {
         movesMade++;

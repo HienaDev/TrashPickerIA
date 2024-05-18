@@ -6,8 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
 
     private TrashGame trashScript;
+    // Keeps track of where the player is to validate moves
     private Vector2Int playerPosition;
-
+    // Saves the possible movements for the random move
     private string[] moves;
 
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Move Right
         if (Input.GetKeyDown(KeyCode.D))
         {
             if (CheckPossibleMove("right"))
@@ -30,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
                 ExecuteMove("right");
             }
         }
-
+        // Move Left
         if (Input.GetKeyDown(KeyCode.A))
         {
             if (CheckPossibleMove("left"))
@@ -38,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
                 ExecuteMove("left");
             }
         }
-
+        // Move Up
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (CheckPossibleMove("up"))
@@ -46,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
                 ExecuteMove("up");
             }
         }
-
+        // Move Down
         if (Input.GetKeyDown(KeyCode.S))
         {
             if (CheckPossibleMove("down"))
@@ -54,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
                 ExecuteMove("down");
             }
         }
-
+        // Pick up trash
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (CheckPossibleMove("pick"))
@@ -62,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
                 ExecuteMove("pick");
             }
         }
-
+        // Don't do anything
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (CheckPossibleMove("stay"))
@@ -70,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
                 ExecuteMove("stay");
             }
         }
-
+        // Move randomly
         if (Input.GetKeyDown(KeyCode.R))
         {
             string randomMove = moves[Random.Range(0, moves.Length)];
@@ -82,6 +84,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the last move used is a valid move and awards points
+    /// based on what it checked for, if it is valid
+    /// it returns true, if not it returns false
+    /// </summary>
+    /// <param name="move">The name of the move to be checked</param>
+    /// <returns></returns>
     private bool CheckPossibleMove(string move)
     {
 
@@ -90,55 +99,60 @@ public class PlayerMovement : MonoBehaviour
         switch (move)
         {
             case "left":
-                if ((transform.position.x - 48) / 32 >= 0)
+                // Checks if its the border of the grid a.k.a wall
+                if (trashScript.Grid[playerPosition.x - 1, playerPosition.y] == 1)
                 {
-                    possible = true;
+                    possible = false;
+                    trashScript.AddScore(-5);
                 }
                 else
                 {
-                    trashScript.AddScore(-5);
-                    possible = false;
+                    possible = true;
                 }
 
                 break;
 
             case "right":
-                if ((transform.position.x + 48) / 32 <= trashScript.GridSize)
+                // Checks if its the border of the grid a.k.a wall
+                if (trashScript.Grid[playerPosition.x + 1, playerPosition.y] == 1)
                 {
-                    possible = true;
+                    possible = false;
+                    trashScript.AddScore(-5);
                 }
                 else
-                {
-                    trashScript.AddScore(-5);
-                    possible = false;
+                { 
+                    possible = true;
                 }
                 break;
 
             case "down":
-                if ((transform.position.y - 48) / 32 >= 0)
+                // Checks if its the border of the grid a.k.a wall
+                if (trashScript.Grid[playerPosition.x, playerPosition.y - 1] == 1)
                 {
-                    possible = true;
+                    possible = false;
+                    trashScript.AddScore(-5);
                 }
                 else
-                {
-                    trashScript.AddScore(-5);
-                    possible = false;
+                {   
+                    possible = true;
                 }
                 break;
 
             case "up":
-                if ((transform.position.y + 48) / 32 <= trashScript.GridSize)
+                // Checks if its the border of the grid a.k.a wall
+                if (trashScript.Grid[playerPosition.x, playerPosition.y + 1] == 1)
                 {
-                    possible = true;
+                    possible = false;
+                    trashScript.AddScore(-5);
                 }
                 else
                 {
-                    trashScript.AddScore(-5);
-                    possible = false;
+                    possible = true;
                 }
                 break;
 
             case "pick":
+                // Checks if the tile the player is on has trash
                 if (trashScript.Grid[playerPosition.x, playerPosition.y] == 2)
                 {
                     trashScript.AddScore(10);
@@ -160,6 +174,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
+        // If the game is over we disable the player movement
         if (trashScript.AddMove())
         {
             gameObject.GetComponent<PlayerMovement>().enabled = false;
@@ -168,29 +183,39 @@ public class PlayerMovement : MonoBehaviour
         return possible;
     }
 
+    /// <summary>
+    /// Executes a move
+    /// </summary>
+    /// <param name="move">The name of the move to be executed</param>
     private void ExecuteMove(string move)
     {
         switch (move)
         {
+            // Moves the player left
             case "left":
                 transform.position = new Vector2(transform.position.x - 32, transform.position.y);
                 playerPosition.x -= 1;
                 break;
+            // Moves the player right
             case "right":
                 transform.position = new Vector2(transform.position.x + 32, transform.position.y);
                 playerPosition.x += 1;
                 break;
+            // Moves the player down
             case "down":
                 transform.position = new Vector2(transform.position.x, transform.position.y - 32);
                 playerPosition.y -= 1;
                 break;
+            // Moves the player up
             case "up":
                 transform.position = new Vector2(transform.position.x, transform.position.y + 32);
                 playerPosition.y += 1;
                 break;
+            // Destroys the trash under the player
             case "pick":
                 Destroy(trashScript.GridGameObjects[playerPosition.x, playerPosition.y]);
                 break;
+            // Doesn't do anything, could use default but we keep "stay" for consistency
             case "stay":
                 break;
             default:

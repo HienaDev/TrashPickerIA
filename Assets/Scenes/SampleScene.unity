@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f89c39939949f488335743d3ecba5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 5
+  gridSize: 8
   maxMoves: 30
   chanceForTrash: 40
   robot: {fileID: 8327002712645369162, guid: 133a108de636c0e41aea896fbe513d64, type: 3}
