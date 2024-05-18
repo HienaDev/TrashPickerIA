@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InstatiateGrid : MonoBehaviour
 {
-    [SerializeField] private int gridSize;
+    [SerializeField] private TrashGame trashScript;
     private int x;
     private int y;
 
@@ -21,9 +21,9 @@ public class InstatiateGrid : MonoBehaviour
         //Debug.Log(Screen.width);
         //Debug.Log(Screen.height);
 
-        for (int i = 0; i < gridSize; i++)
+        for (int i = 0; i < trashScript.GridSize; i++)
         {
-            for (int j = 0; j < gridSize; j++)
+            for (int j = 0; j < trashScript.GridSize; j++)
             {
                 GameObject temp = Instantiate(gridPrefab, transform);
                 temp.transform.position = new Vector2(x + i * 32, y + j * 32);
