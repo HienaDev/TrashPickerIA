@@ -589,6 +589,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 5
+  maxMoves: 30
+  chanceForTrash: 40
   robot: {fileID: 8327002712645369162, guid: 133a108de636c0e41aea896fbe513d64, type: 3}
   wall: {fileID: 1712361678135112271, guid: e509c3b7ab4f2af47943d6fcebafb647, type: 3}
   trash: {fileID: 1712361678135112271, guid: e245cda9296872345aa02460d6a3e9a7, type: 3}

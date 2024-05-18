@@ -8,13 +8,15 @@ using UnityEngine.SocialPlatforms.Impl;
 public class TrashGame : MonoBehaviour
 {
 
-    [SerializeField] private int gridSize;
+    [SerializeField, Tooltip("A number above 10 will be offscreen"), Header("[CONFIGURATIONS]")] private int gridSize;
+    [SerializeField] private int maxMoves;
+    [SerializeField, Range(0, 100)] private int chanceForTrash;
     public int GridSize => gridSize;
 
     private int[,] grid;
     public int[,] Grid => grid;
 
-    [SerializeField] private GameObject robot;
+    [SerializeField, Header("[PREFABS]")] private GameObject robot;
     private bool emptyPlaceForPlayer = false;
 
     [SerializeField] private GameObject wall;
@@ -29,7 +31,7 @@ public class TrashGame : MonoBehaviour
     private int score;
     private int movesMade;
 
-    [SerializeField] private TextMeshProUGUI scoreUI;
+    [SerializeField, Header("[UI]")] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI movesUI;
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private GameObject playAgainButton;
@@ -60,7 +62,7 @@ public class TrashGame : MonoBehaviour
         movesMade = 0;
         emptyPlaceForPlayer = false;
         scoreUI.text = $"Score: {score}";
-        movesUI.text = $"Moves: {movesMade}/20";
+        movesUI.text = $"Moves: {movesMade}/{maxMoves}";
 
         foreach (GameObject objects in gridGameObjects)
         {
@@ -81,12 +83,7 @@ public class TrashGame : MonoBehaviour
         {
             for (int j = 0; j < gridSize; j++)
             {
-                // 0 = Empty
-                // 1 = Wall
-                // 2 = Trash
-                grid[i, j] = Random.Range(0, 3);
-
-
+                grid[i, j] = Random.Range(0, 100) < chanceForTrash ? 2 : 0;
 
                 if (grid[i, j] == 1)
                 {
@@ -150,11 +147,11 @@ public class TrashGame : MonoBehaviour
     public bool AddMove()
     {
         movesMade++;
-        movesUI.text = $"Moves: {movesMade}/20";
-        if (movesMade == 20)
+        movesUI.text = $"Moves: {movesMade}/{maxMoves}";
+        if (movesMade == maxMoves)
         {
             gameOverUI.SetActive(true);
-            gameOverUI.GetComponent<TextMeshProUGUI>().text = $"GAME OVER\n\nScore: {score}";
+            gameOverUI.GetComponent<TextMeshProUGUI>().text = $"GAME OVER\n\nScore:\n{score}";
             playAgainButton.SetActive(true);
             return true;
         }
