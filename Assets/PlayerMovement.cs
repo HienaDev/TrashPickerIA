@@ -62,10 +62,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CheckPossibleMove(string move)
     {
-        if (trashScript.AddMove())
-        {
-            gameObject.GetComponent<PlayerMovement>().enabled = false;
-        }
+
+        bool possible = false;
 
         switch (move)
         {
@@ -75,12 +73,18 @@ public class PlayerMovement : MonoBehaviour
                     if (trashScript.Grid[playerPosition.x - 1, playerPosition.y] == 1)
                     {
                         trashScript.AddScore(-5);
-                        return false;
+                        possible = false;
                     }
-                    return true;
+                    else
+                        possible = true;
                 }
-                trashScript.AddScore(-5);
-                return false;
+                else
+                {
+                    trashScript.AddScore(-5);
+                    possible = false;
+                }
+
+                break;
 
             case "right":
                 if ((transform.position.x + 48) / 32 <= trashScript.GridSize)
@@ -88,12 +92,17 @@ public class PlayerMovement : MonoBehaviour
                     if (trashScript.Grid[playerPosition.x + 1, playerPosition.y] == 1)
                     {
                         trashScript.AddScore(-5);
-                        return false;
+                        possible = false;
                     }
-                    return true;
+                    else
+                        possible = true;
                 }
-                trashScript.AddScore(-5);
-                return false;
+                else
+                {
+                    trashScript.AddScore(-5);
+                    possible = false;
+                }
+                break;
 
             case "down":
                 if ((transform.position.y - 48) / 32 >= 0)
@@ -101,12 +110,17 @@ public class PlayerMovement : MonoBehaviour
                     if (trashScript.Grid[playerPosition.x, playerPosition.y - 1] == 1)
                     {
                         trashScript.AddScore(-5);
-                        return false;
+                        possible = false;
                     }
-                    return true;
+                    else
+                        possible = true;
                 }
-                trashScript.AddScore(-5);
-                return false;
+                else
+                {
+                    trashScript.AddScore(-5);
+                    possible = false;
+                }
+                break;
 
             case "up":
                 if ((transform.position.y + 48) / 32 <= trashScript.GridSize)
@@ -114,24 +128,42 @@ public class PlayerMovement : MonoBehaviour
                     if (trashScript.Grid[playerPosition.x, playerPosition.y + 1] == 1)
                     {
                         trashScript.AddScore(-5);
-                        return false;
+                        possible = false;
                     }
-                    return true;
+                    else
+                        possible = true;
                 }
-                trashScript.AddScore(-5);
-                return false;
+                else
+                {
+                    trashScript.AddScore(-5);
+                    possible = false;
+                }
+                break;
 
             case "pick":
                 if (trashScript.Grid[playerPosition.x, playerPosition.y] == 2)
                 {
                     trashScript.AddScore(10);
-                    return true;
+                    possible = true;
                 }
-                trashScript.AddScore(-1);
-                return false;
+                else
+                {
+                    trashScript.AddScore(-1);
+                    possible = false;
+                }
+                break;
+
             default:
-                return false;
+                possible = false;
+                break;
         }
+
+        if (trashScript.AddMove())
+        {
+            gameObject.GetComponent<PlayerMovement>().enabled = false;
+        }
+
+        return possible;
     }
 
     private void ExecuteMove(string move)

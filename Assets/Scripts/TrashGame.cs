@@ -21,6 +21,7 @@ public class TrashGame : MonoBehaviour
     [SerializeField] private GameObject trash;
     private GameObject[,] gridGameObjects;
     public GameObject[,] GridGameObjects => gridGameObjects;
+    private GameObject player;
 
     private Vector2Int initialPlayerPosition;
     public Vector2Int InitialPlayerPosition => initialPlayerPosition;
@@ -31,15 +32,51 @@ public class TrashGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI movesUI;
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject playAgainButton;
 
     // Start is called before the first frame update
     void Start()
     {
-        grid = new int[gridSize, gridSize];
+        player = null;
         gridGameObjects = new GameObject[gridSize, gridSize];
+        grid = new int[gridSize, gridSize];
 
+        for (int i = 0; i < gridSize; i++)
+        {
+            for (int j = 0; j < gridSize; j++)
+            {
+                gridGameObjects[i, j] = null;
+            }
+        }
+
+        StartGame();
+    }
+
+    public void StartGame()
+    {
+        gameOverUI.SetActive(false);
+        playAgainButton.SetActive(false);
+        score = 0;
         movesMade = 0;
+        emptyPlaceForPlayer = false;
+        scoreUI.text = $"Score: {score}";
+        movesUI.text = $"Moves: {movesMade}/20";
 
+        foreach (GameObject objects in gridGameObjects)
+        {
+            if(objects != null)
+            {
+                Destroy(objects);
+            }
+        }
+
+        for (int i = 0; i < gridSize; i++)
+        {
+            for (int j = 0; j < gridSize; j++)
+            {
+                gridGameObjects[i, j] = null;
+            }
+        }
         for (int i = 0; i < gridSize; i++)
         {
             for (int j = 0; j < gridSize; j++)
@@ -55,19 +92,20 @@ public class TrashGame : MonoBehaviour
                 {
                     GameObject fixedObject = Instantiate(wall, transform);
                     fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
-                    gridGameObjects[i, j] = fixedObject;    
-                }  
+                    gridGameObjects[i, j] = fixedObject;
+                }
                 if (grid[i, j] == 2)
                 {
                     GameObject fixedObject = Instantiate(trash, transform);
                     fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
                     gridGameObjects[i, j] = fixedObject;
                 }
-                    
 
-                
+
+
             }
         }
+
         string gridDisplay = "";
         for (int j = gridSize - 1; j >= 0; j--)
         {
@@ -84,7 +122,6 @@ public class TrashGame : MonoBehaviour
 
         initialPlayerPosition = Vector2Int.zero;
 
-
         do
         {
             initialPlayerPosition.x = Random.Range(0, gridSize);
@@ -96,7 +133,10 @@ public class TrashGame : MonoBehaviour
             }
         } while (!emptyPlaceForPlayer);
 
-        GameObject player = Instantiate(robot);
+        if(player != null)
+            Destroy(player);
+
+        player = Instantiate(robot);
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
     }
 
@@ -115,6 +155,7 @@ public class TrashGame : MonoBehaviour
         {
             gameOverUI.SetActive(true);
             gameOverUI.GetComponent<TextMeshProUGUI>().text = $"GAME OVER\n\nScore: {score}";
+            playAgainButton.SetActive(true);
             return true;
         }
         return false;
