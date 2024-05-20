@@ -1,16 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InstatiateGrid : MonoBehaviour
+/// <summary>
+/// This script is responsible for instantiating the grid tiles.
+/// </summary>
+public class InstantiateGrid : MonoBehaviour
 {
+    [SerializeField] private GameObject gridPrefab;
+
     private TrashGame trashScript;
 
-    [SerializeField] private GameObject gridPrefab;
- 
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     void Start()
     {
-
         trashScript = FindObjectOfType<TrashGame>();
 
         // Instantiates grid tiles for the map layout
@@ -26,6 +29,4 @@ public class InstatiateGrid : MonoBehaviour
             }
         }
     }
-
-
 }

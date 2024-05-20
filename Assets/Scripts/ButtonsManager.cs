@@ -6,6 +6,7 @@ using UnityEngine;
 public class ButtonsManager : MonoBehaviour
 {
     [SerializeField] private GameObject buttons;
+    
     private TrashGame trashScript;
 
     /// <summary>
