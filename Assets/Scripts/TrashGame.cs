@@ -12,6 +12,7 @@ public class TrashGame : MonoBehaviour
      SerializeField]
     private int gridSize;
     [SerializeField] private int maxMoves;
+    [SerializeField] private bool playerInstantMovement;
     [SerializeField, Header("Rng")] private bool seeded;
     [SerializeField] private string seed;
     private System.Random random;
@@ -53,12 +54,14 @@ public class TrashGame : MonoBehaviour
 
     // The score and moves for the UI
     private int score;
+    private int[] bestScores;
     private int movesMade;
 
     // The UI objects
     [SerializeField, Header("[UI]")] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI movesUI;
     [SerializeField] private TextMeshProUGUI aiObservationsUI;
+    [SerializeField] private TextMeshProUGUI bestScoresUI;
     [SerializeField] private GameObject gameOverUI;
     public bool GameOver { get; private set; }
 
@@ -69,6 +72,8 @@ public class TrashGame : MonoBehaviour
     {
         // Get the buttons manager
         buttonsManager = FindObjectOfType<ButtonsManager>();
+
+        bestScores = new int[6] { -1000000, -1000000, -1000000, -1000000, -1000000, -1000000};
 
         player = null;
 
@@ -237,6 +242,7 @@ public class TrashGame : MonoBehaviour
 
         // Instantite player at random position
         player = Instantiate(robot);
+        player.GetComponent<PlayerMovement>().InstantMovement = playerInstantMovement;
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
     }
 
@@ -292,6 +298,28 @@ public class TrashGame : MonoBehaviour
             gameOverUI.SetActive(true);
             gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = $"GAME OVER\n\nScore:\n{score}";
             buttonsManager.TurnOnButtons();
+
+            for (int i = bestScores.Length - 1; i >= 0; i--)
+            {
+                if (bestScores[i] < score)
+                {
+                    bestScores[i] = score;
+                    break;
+                }
+            }
+            Array.Sort(bestScores);
+            Array.Reverse(bestScores);
+            string bestScoreText = "Best Scores:\n";
+            
+            for (int i = 0;  i < bestScores.Length; i++)
+            {
+                if(bestScores[i] != -1000000)
+                    bestScoreText += $"{i + 1} - {bestScores[i]}\n";
+                else
+                    bestScoreText += $"{i + 1} - ___\n";
+            }
+
+            bestScoresUI.text = bestScoreText ;
             GameOver = true;
             return true;
         }

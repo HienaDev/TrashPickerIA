@@ -15,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float timeForEachAITurn;
     private WaitForSeconds waitForSecondsAI;
+    [SerializeField] private float howMuchToMovePerFrame;
+    private bool doneMoving;
+    public bool InstantMovement;
+
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +32,13 @@ public class PlayerMovement : MonoBehaviour
 
         playerPosition = trashScript.InitialPlayerPosition;
 
+        animator = GetComponent<Animator>();
+
         moves = new PlayerInputs[] { PlayerInputs.Left, PlayerInputs.Right, PlayerInputs.Up, PlayerInputs.Down };
 
-        if(trashScript.AI)
+        doneMoving = true;
+
+        if (trashScript.AI)
         {
             StartCoroutine(AIPlay());
         }
@@ -39,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // If it's not AI
-        if (!trashScript.AI)
+        if (!trashScript.AI && doneMoving)
         {
             // Move Right
             if (Input.GetKeyDown(KeyCode.D))
@@ -92,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator AIPlay()
     {
-        
+
         while (!trashScript.GameOver)
         {
             Debug.Log("AI Playing");
@@ -108,10 +117,10 @@ public class PlayerMovement : MonoBehaviour
                 {trashScript.TileMiddle, trashScript.Grid[playerPosition.x, playerPosition.y].ToString()}
             });
 
-            Debug.Log("AI chose " + move);
+            
             Enum.TryParse<PlayerInputs>(move, out enumMove);
 
-            if(enumMove == PlayerInputs.Random)
+            if (enumMove == PlayerInputs.Random)
             {
                 PlayerInputs randomMove = moves[UnityEngine.Random.Range(0, moves.Length)];
                 Debug.Log($"Random chose {randomMove}");
@@ -120,11 +129,13 @@ public class PlayerMovement : MonoBehaviour
             else
                 CheckPossibleMove(enumMove);
 
+            Debug.Log("AI chose " + enumMove.ToString());
+
             yield return waitForSecondsAI;
 
             Debug.Log("AI Turn Done");
         }
-        
+
     }
 
     /// <summary>
@@ -239,26 +250,42 @@ public class PlayerMovement : MonoBehaviour
         {
             // Moves the player left
             case PlayerInputs.Left:
-                transform.position = new Vector2(transform.position.x - 32, transform.position.y);
+                if (InstantMovement)
+                    transform.position = new Vector2(transform.position.x - 32, transform.position.y);
+                else
+                    StartCoroutine(MoveRobot(new Vector2(transform.position.x - 32, transform.position.y)));
+
                 playerPosition.x -= 1;
                 break;
             // Moves the player right
             case PlayerInputs.Right:
-                transform.position = new Vector2(transform.position.x + 32, transform.position.y);
+                if (InstantMovement)
+                    transform.position = new Vector2(transform.position.x + 32, transform.position.y);
+                else
+                    StartCoroutine(MoveRobot(new Vector2(transform.position.x + 32, transform.position.y)));
                 playerPosition.x += 1;
                 break;
             // Moves the player down
             case PlayerInputs.Down:
-                transform.position = new Vector2(transform.position.x, transform.position.y - 32);
+                if (InstantMovement)
+                    transform.position = new Vector2(transform.position.x, transform.position.y - 32);
+                else
+                    StartCoroutine(MoveRobot(new Vector2(transform.position.x, transform.position.y - 32)));
+
                 playerPosition.y -= 1;
                 break;
             // Moves the player up
             case PlayerInputs.Up:
-                transform.position = new Vector2(transform.position.x, transform.position.y + 32);
+                if (InstantMovement)
+                    transform.position = new Vector2(transform.position.x, transform.position.y + 32);
+                else
+                    StartCoroutine(MoveRobot(new Vector2(transform.position.x, transform.position.y + 32)));
+
                 playerPosition.y += 1;
                 break;
             // Destroys the trash under the player
             case PlayerInputs.Pick:
+                animator.SetTrigger("PickUp");
                 Destroy(trashScript.GridGameObjects[playerPosition.x, playerPosition.y]);
                 break;
             // Doesn't do anything, could use default but we keep "stay" for consistency
@@ -269,5 +296,34 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
+    }
+
+    private IEnumerator MoveRobot(Vector2 newPos)
+    {
+        float lerpValue = 0;
+
+        doneMoving = false;
+
+        animator.SetBool("Moving", !doneMoving);
+
+        Vector2 initialPos = transform.position;
+
+        if (!(initialPos.x == newPos.x))
+            GetComponent<SpriteRenderer>().flipX = initialPos.x > newPos.x;
+ 
+
+        while (!doneMoving)
+        {
+            lerpValue += howMuchToMovePerFrame * Time.deltaTime;
+            if (lerpValue > 1)
+            {
+                lerpValue = 1;
+                doneMoving = true;
+            }
+            transform.position = Vector2.Lerp(initialPos, newPos, lerpValue);
+            yield return null;
+        }
+
+        animator.SetBool("Moving", !doneMoving);
     }
 }

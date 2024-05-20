@@ -72,9 +72,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: 1238a8433c3e20243b10a5f1b0975a0f, type: 3}
-  m_Color: {r: 0.20784314, g: 0.050980393, b: 0, a: 1}
+  m_Color: {r: 0.13725491, g: 0.15686275, b: 0.23529413, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 2069272908841917643}
   - component: {fileID: 5367448482802741085}
   - component: {fileID: 2844073087268607879}
+  - component: {fileID: 1763417181734826612}
   m_Layer: 0
   m_Name: Cowboy
   m_TagString: Untagged
@@ -158,8 +159,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: a3f8a0b19a5bbe647b74bbcb50aa92c3, type: 3}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: -2070046684, guid: 232a78e559c00f4459f67e761993d366, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -183,3 +184,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeForEachAITurn: 1
+  howMuchToMovePerFrame: 2
+  InstantMovement: 0
+--- !u!95 &1763417181734826612
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8327002712645369162}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2cb8dc758d85bf542b92d633dc6a2f86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
