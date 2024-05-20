@@ -4,24 +4,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This script is responsible for the player movement.
+/// </summary>
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private float timeForEachAITurn;
+    [SerializeField] private float howMuchToMovePerFrame;
 
     private TrashGame trashScript;
-    // Keeps track of where the player is to validate moves
     private Vector2Int playerPosition;
-    // Saves the possible movements for the random move
     private PlayerInputs[] moves;
-
-    [SerializeField] private float timeForEachAITurn;
     private WaitForSeconds waitForSecondsAI;
-    [SerializeField] private float howMuchToMovePerFrame;
     private bool doneMoving;
     public bool InstantMovement;
-
     private Animator animator;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     void Start()
     {
         trashScript = FindObjectOfType<TrashGame>();
@@ -44,7 +45,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     void Update()
     {
         // If it's not AI
@@ -95,13 +98,14 @@ public class PlayerMovement : MonoBehaviour
                 CheckPossibleMove(randomMove);
             }
         }
-
     }
 
-
+    /// <summary>
+    /// AI plays the game.
+    /// </summary>
+    /// <returns> Returns the seconds to wait for the AI to play. </returns>
     private IEnumerator AIPlay()
     {
-
         while (!trashScript.GameOver)
         {
             Debug.Log("AI Playing");
@@ -141,13 +145,12 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Checks if the last move used is a valid move and awards points
     /// based on what it checked for, if it is valid
-    /// it returns true, if not it returns false
+    /// it returns true, if not it returns false.
     /// </summary>
-    /// <param name="move">The name of the move to be checked</param>
-    /// <returns></returns>
+    /// <param name="move"> The name of the move to be checked. </param>
+    /// <returns> Returns true if the move is possible, false otherwise. </returns>
     private void CheckPossibleMove(PlayerInputs move)
     {
-
         bool possible = false;
 
         switch (move)
@@ -242,9 +245,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Executes a move
+    /// Executes a move.
     /// </summary>
-    /// <param name="move">The name of the move to be executed</param>
+    /// <param name="move"> The name of the move to be executed. </param>
     private void ExecuteMove(PlayerInputs move)
     {
         switch (move)
@@ -298,6 +301,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Moves the robot to a new position.
+    /// </summary>
+    /// <param name="newPos"> The new position to move the robot to. </param>
+    /// <returns> Returns null when the robot is done moving. </returns>
     private IEnumerator MoveRobot(Vector2 newPos)
     {
         float lerpValue = 0;
