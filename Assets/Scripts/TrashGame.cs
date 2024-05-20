@@ -1,6 +1,7 @@
 using LibGameAI.NaiveBayes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class TrashGame : MonoBehaviour
     [SerializeField, Header("Rng")] private bool seeded;
     [SerializeField] private string seed;
     private System.Random random;
-    
+
     [SerializeField, Range(0, 100)] private int chanceForTrash;
     public int GridSize => gridSize;
     // The size of the grid + 2 to account for the walls
@@ -73,7 +74,7 @@ public class TrashGame : MonoBehaviour
         // Get the buttons manager
         buttonsManager = FindObjectOfType<ButtonsManager>();
 
-        bestScores = new int[6] { -1000000, -1000000, -1000000, -1000000, -1000000, -1000000};
+        bestScores = new int[6] { -1000000, -1000000, -1000000, -1000000, -1000000, -1000000 };
 
         player = null;
 
@@ -265,7 +266,7 @@ public class TrashGame : MonoBehaviour
         Debug.Log($"When tileUp is {grid[playerPosition.x, playerPosition.y + 1].ToString()}\n" +
             $"When tileRight is {grid[playerPosition.x + 1, playerPosition.y].ToString()}\n" +
             $"When tileDown is {grid[playerPosition.x, playerPosition.y - 1].ToString()} \n" +
-            $"When tileLeft is {grid[playerPosition.x - 1, playerPosition.y].ToString() }\n" +
+            $"When tileLeft is {grid[playerPosition.x - 1, playerPosition.y].ToString()}\n" +
             $"When tileMiddle is {grid[playerPosition.x, playerPosition.y].ToString()} \n" +
             $"Player chose {move.ToString()}");
 
@@ -310,16 +311,20 @@ public class TrashGame : MonoBehaviour
             Array.Sort(bestScores);
             Array.Reverse(bestScores);
             string bestScoreText = "Best Scores:\n";
-            
-            for (int i = 0;  i < bestScores.Length; i++)
+
+            for (int i = 0; i < bestScores.Length; i++)
             {
-                if(bestScores[i] != -1000000)
-                    bestScoreText += $"{i + 1} - {bestScores[i]}\n";
+                bestScoreText += $"{i + 1} - ";
+
+                if (bestScores[i] == score)
+                    bestScoreText += $"<color=#FFFF00>{bestScores[i]}</color>\n";
+                else if (bestScores[i] != -1000000)
+                    bestScoreText += $"{bestScores[i]}\n";
                 else
-                    bestScoreText += $"{i + 1} - ___\n";
+                    bestScoreText += $"___\n";
             }
 
-            bestScoresUI.text = bestScoreText ;
+            bestScoresUI.text = bestScoreText;
             GameOver = true;
             return true;
         }

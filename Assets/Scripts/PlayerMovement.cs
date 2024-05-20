@@ -206,6 +206,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case PlayerInputs.Pick:
+                animator.SetTrigger("PickUp");
                 // Checks if the tile the player is on has trash
                 if (trashScript.Grid[playerPosition.x, playerPosition.y] == TileType.Trash)
                 {
@@ -285,7 +286,6 @@ public class PlayerMovement : MonoBehaviour
                 break;
             // Destroys the trash under the player
             case PlayerInputs.Pick:
-                animator.SetTrigger("PickUp");
                 Destroy(trashScript.GridGameObjects[playerPosition.x, playerPosition.y]);
                 break;
             // Doesn't do anything, could use default but we keep "stay" for consistency
