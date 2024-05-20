@@ -34,35 +34,41 @@ public class PlayerMovement : MonoBehaviour
         // Move Left
         if (Input.GetKeyDown(KeyCode.A))
         {
+            trashScript.UpdateAI(PlayerInputs.Left, playerPosition);
             CheckPossibleMove(PlayerInputs.Left);
            
         }
         // Move Up
         if (Input.GetKeyDown(KeyCode.W))
         {
+            trashScript.UpdateAI(PlayerInputs.Up, playerPosition);
             CheckPossibleMove(PlayerInputs.Up);
                   }
         // Move Down
         if (Input.GetKeyDown(KeyCode.S))
         {
+            trashScript.UpdateAI(PlayerInputs.Down, playerPosition);
             CheckPossibleMove(PlayerInputs.Down);
            
         }
         // Pick up trash
         if (Input.GetKeyDown(KeyCode.E))
         {
+            trashScript.UpdateAI(PlayerInputs.Pick, playerPosition);
             CheckPossibleMove(PlayerInputs.Pick);
            
         }
         // Don't do anything
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            trashScript.UpdateAI(PlayerInputs.Stay, playerPosition);
             CheckPossibleMove(PlayerInputs.Stay);
            
         }
         // Move randomly
         if (Input.GetKeyDown(KeyCode.R))
         {
+            trashScript.UpdateAI(PlayerInputs.Random, playerPosition);
             PlayerInputs randomMove = moves[Random.Range(0, moves.Length)];
             Debug.Log($"Random chose {randomMove}");
             CheckPossibleMove(randomMove);

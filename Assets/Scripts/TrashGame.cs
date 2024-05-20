@@ -1,5 +1,6 @@
 using LibGameAI.NaiveBayes;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -133,7 +134,7 @@ public class TrashGame : MonoBehaviour
             new Attrib[] { tileUp, tileRight, tileDown, tileLeft, tileMiddle });
     }
 
- 
+
 
     public void StartGameHuman()
     {
@@ -220,7 +221,26 @@ public class TrashGame : MonoBehaviour
 
     public void UpdateAI(PlayerInputs move, Vector2Int playerPosition)
     {
+        NbClassifier.Update(
+            move.ToString(),
+            new Dictionary<Attrib, string>()
+            {
+                {tileUp, grid[playerPosition.x, playerPosition.y + 1].ToString()},
+                {tileRight, grid[playerPosition.x + 1, playerPosition.y].ToString()},
+                {tileDown, grid[playerPosition.x, playerPosition.y - 1].ToString()},
+                {tileLeft, grid[playerPosition.x - 1, playerPosition.y].ToString()},
+                {tileMiddle, grid[playerPosition.x, playerPosition.y].ToString()},
+            }
+        );
 
+        Debug.Log($"When tileUp is {grid[playerPosition.x, playerPosition.y + 1].ToString()}\n" +
+            $"When tileRight is {grid[playerPosition.x + 1, playerPosition.y].ToString()}\n" +
+            $"When tileDown is {grid[playerPosition.x, playerPosition.y - 1].ToString()} \n" +
+            $"When tileLeft is {grid[playerPosition.x - 1, playerPosition.y].ToString() }\n" +
+            $"When tileMiddle is {grid[playerPosition.x, playerPosition.y].ToString()} \n" +
+            $"Player chose {move.ToString()}");
+
+        aiObservations++;
     }
 
     /// <summary>
