@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 2844073087268607879}
   - component: {fileID: 1763417181734826612}
   m_Layer: 0
-  m_Name: Cowboy
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,8 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae6e52702ecb584891d86ea89b59622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeForEachAITurn: 1
-  howMuchToMovePerFrame: 2
+  timeForEachAITurn: 0.5
+  howMuchToMovePerFrame: 3
   InstantMovement: 0
 --- !u!95 &1763417181734826612
 Animator:
