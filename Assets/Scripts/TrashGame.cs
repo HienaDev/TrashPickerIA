@@ -1,28 +1,33 @@
 using LibGameAI.NaiveBayes;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// This script is responsible for managing the game state.
+/// </summary>
 public class TrashGame : MonoBehaviour
 {
     // These 3 values are available for change in the inspector, the size of the grid
     // the max amount of moves and the chance for trash to spawn
     [Tooltip("A number above 8 will have tiles offscren"), Header("[CONFIGURATIONS]"),
-     SerializeField]
-    private int gridSize;
+     SerializeField] private int gridSize;
     [SerializeField] private int maxMoves;
     [SerializeField] private bool playerInstantMovement;
     [SerializeField, Header("Rng")] private bool seeded;
     [SerializeField] private string seed;
+    [SerializeField, Range(0, 100)] private int chanceForTrash;
+
     private System.Random random;
 
-    [SerializeField, Range(0, 100)] private int chanceForTrash;
+    /// <summary>
+    /// The size of the grid.
+    /// </summary>
     public int GridSize => gridSize;
+
     // The size of the grid + 2 to account for the walls
     private int borderSize;
-
     // Keeps the states of the grid, 0 for empty, 1 for wall and 2 for trash
     private TileType[,] grid;
     public TileType[,] Grid => grid;
@@ -64,11 +69,18 @@ public class TrashGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI aiObservationsUI;
     [SerializeField] private TextMeshProUGUI bestScoresUI;
     [SerializeField] private GameObject gameOverUI;
+
+    /// <summary>
+    /// Boolean to check if the game is over.
+    /// </summary>
+    /// <value> States if the game is over. </value>
     public bool GameOver { get; private set; }
 
     private ButtonsManager buttonsManager;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     void Start()
     {
         // Get the buttons manager
@@ -102,6 +114,9 @@ public class TrashGame : MonoBehaviour
         InitAI();
     }
 
+    /// <summary>
+    /// Initializes the AI.
+    /// </summary>
     private void InitAI()
     {
         tileUp = new Attrib("tileUp", Enum.GetNames(typeof(TileType)));
@@ -153,10 +168,11 @@ public class TrashGame : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Start the game.
+    /// </summary>
     public void StartGame()
     {
-
         if (seeded)
         {
             random = new System.Random(seed.GetHashCode());
@@ -247,8 +263,17 @@ public class TrashGame : MonoBehaviour
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
     }
 
+    /// <summary>
+    /// Remove trash from the grid.
+    /// </summary>
+    /// <param name="pos"> The position to remove the trash from. </param>
     public void RemoveTrash(Vector2Int pos) => grid[pos.x, pos.y] = 0;
 
+    /// <summary>
+    /// Update the AI with the player's move and position.
+    /// </summary>
+    /// <param name="move"> The player's move. </param>
+    /// <param name="playerPosition"> The player's position. </param>
     public void UpdateAI(PlayerInputs move, Vector2Int playerPosition)
     {
         NbClassifier.Update(
@@ -274,11 +299,10 @@ public class TrashGame : MonoBehaviour
         aiObservationsUI.text = $"AI Observations: {aiObservations}";
     }
 
-
     /// <summary>
-    /// Add score value and change score UI
+    /// Add score value and change score UI.
     /// </summary>
-    /// <param name="value">The value to be added to the score</param>
+    /// <param name="value"> The value to be added to the score. </param>
     public void AddScore(int value)
     {
         score += value;
@@ -287,9 +311,9 @@ public class TrashGame : MonoBehaviour
     }
 
     /// <summary>
-    /// Add +1 to amount of moves and updates MoveUI
+    /// Add +1 to amount of moves and updates MoveUI.
     /// </summary>
-    /// <returns>returns true if we've hit the max amout of moves</returns>
+    /// <returns> Returns true if we've hit the max amout of moves. </returns>
     public bool AddMove()
     {
         movesMade++;
@@ -330,5 +354,4 @@ public class TrashGame : MonoBehaviour
         }
         return false;
     }
-
 }
