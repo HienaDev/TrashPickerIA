@@ -21,7 +21,11 @@ public class TrashGame : MonoBehaviour
     private TileType[,] grid;
     public TileType[,] Grid => grid;
 
-    private Attrib tileDirection, tileType;
+    // AI variables
+    private Attrib tileUp, tileRight, tileDown, tileLeft, tileMiddle;
+    public NaiveBayesClassifier NbClassifier { get; private set; }
+    private int aiObservations = 0;
+    public bool AI { get; private set; }
 
     // The prefabs to instantiate
     [SerializeField, Header("[PREFABS]")] private GameObject robot;
@@ -60,6 +64,9 @@ public class TrashGame : MonoBehaviour
         // Get the border size
         borderSize = gridSize + 2;
 
+        // Bool to keep track of who is playing
+        AI = false;
+
         // Initalize the arrays
         gridGameObjects = new GameObject[borderSize, borderSize];
         grid = new TileType[borderSize, borderSize];
@@ -78,21 +85,55 @@ public class TrashGame : MonoBehaviour
 
     private void InitAI()
     {
-        tileDirection = new Attrib("tileDir", Enum.GetNames(typeof(TileDir)));
-        tileType = new Attrib("tileType", Enum.GetNames(typeof(TileType)));
+        tileUp = new Attrib("tileUp", Enum.GetNames(typeof(TileType)));
+        tileRight = new Attrib("tileRight", Enum.GetNames(typeof(TileType)));
+        tileDown = new Attrib("tileDown", Enum.GetNames(typeof(TileType)));
+        tileLeft = new Attrib("tileLeft", Enum.GetNames(typeof(TileType)));
+        tileMiddle = new Attrib("tileMiddle", Enum.GetNames(typeof(TileType)));
 
-        foreach (string s in tileDirection.Values)
+        Debug.Log(tileUp.Name);
+        foreach (string s in tileUp.Values)
+        {
+            Debug.Log(s);
+        }
+
+        Debug.Log("");
+        Debug.Log(tileRight.Name);
+        foreach (string s in tileRight.Values)
+        {
+            Debug.Log(s);
+        }
+
+        Debug.Log("");
+        Debug.Log(tileDown.Name);
+        foreach (string s in tileDown.Values)
+        {
+            Debug.Log(s);
+        }
+
+        Debug.Log("");
+        Debug.Log(tileLeft.Name);
+        foreach (string s in tileLeft.Values)
+        {
+            Debug.Log(s);
+        }
+
+        Debug.Log("");
+        Debug.Log(tileMiddle.Name);
+        foreach (string s in tileMiddle.Values)
         {
             Debug.Log(s);
         }
 
         Debug.Log("");
 
-        foreach (string s in tileType.Values)
-        {
-            Debug.Log(s);
-        }
+
+        NbClassifier =
+            new NaiveBayesClassifier(Enum.GetNames(typeof(PlayerInputs)),
+            new Attrib[] { tileUp, tileRight, tileDown, tileLeft, tileMiddle });
     }
+
+ 
 
     public void StartGameHuman()
     {
@@ -164,7 +205,7 @@ public class TrashGame : MonoBehaviour
         }
         Debug.Log(gridDisplay);
 
-        // If there's a player from a previous run destroy iy
+        // If there's a player from a previous run destroy it
         if (player != null)
             Destroy(player);
 
@@ -175,6 +216,11 @@ public class TrashGame : MonoBehaviour
         // Instantite player at random position
         player = Instantiate(robot);
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
+    }
+
+    public void UpdateAI(PlayerInputs move, Vector2Int playerPosition)
+    {
+
     }
 
     /// <summary>

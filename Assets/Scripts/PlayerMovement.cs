@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     // Keeps track of where the player is to validate moves
     private Vector2Int playerPosition;
     // Saves the possible movements for the random move
-    private string[] moves;
+    private PlayerInputs[] moves;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
         playerPosition = trashScript.InitialPlayerPosition;
 
-        moves = new string[] { "left", "right", "up", "down" };
+        moves = new PlayerInputs[] { PlayerInputs.Left, PlayerInputs.Right, PlayerInputs.Up, PlayerInputs.Down };
     }
 
     // Update is called once per frame
@@ -27,42 +27,43 @@ public class PlayerMovement : MonoBehaviour
         // Move Right
         if (Input.GetKeyDown(KeyCode.D))
         {
-            CheckPossibleMove("right");
+            trashScript.UpdateAI(PlayerInputs.Right, playerPosition);
+            CheckPossibleMove(PlayerInputs.Right);
             
         }
         // Move Left
         if (Input.GetKeyDown(KeyCode.A))
         {
-            CheckPossibleMove("left");
+            CheckPossibleMove(PlayerInputs.Left);
            
         }
         // Move Up
         if (Input.GetKeyDown(KeyCode.W))
         {
-            CheckPossibleMove("up");
+            CheckPossibleMove(PlayerInputs.Up);
                   }
         // Move Down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            CheckPossibleMove("down");
+            CheckPossibleMove(PlayerInputs.Down);
            
         }
         // Pick up trash
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CheckPossibleMove("pick");
+            CheckPossibleMove(PlayerInputs.Pick);
            
         }
         // Don't do anything
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            CheckPossibleMove("stay");
+            CheckPossibleMove(PlayerInputs.Stay);
            
         }
         // Move randomly
         if (Input.GetKeyDown(KeyCode.R))
         {
-            string randomMove = moves[Random.Range(0, moves.Length)];
+            PlayerInputs randomMove = moves[Random.Range(0, moves.Length)];
             Debug.Log($"Random chose {randomMove}");
             CheckPossibleMove(randomMove);
             
@@ -77,14 +78,14 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="move">The name of the move to be checked</param>
     /// <returns></returns>
-    private void CheckPossibleMove(string move)
+    private void CheckPossibleMove(PlayerInputs move)
     {
 
         bool possible = false;
 
         switch (move)
         {
-            case "left":
+            case PlayerInputs.Left:
                 // Checks if its the border of the grid a.k.a wall
                 if (trashScript.Grid[playerPosition.x - 1, playerPosition.y] == TileType.Wall)
                 {
@@ -98,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
                 break;
 
-            case "right":
+            case PlayerInputs.Right:
                 // Checks if its the border of the grid a.k.a wall
                 if (trashScript.Grid[playerPosition.x + 1, playerPosition.y] == TileType.Wall)
                 {
@@ -111,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
 
-            case "down":
+            case PlayerInputs.Down:
                 // Checks if its the border of the grid a.k.a wall
                 if (trashScript.Grid[playerPosition.x, playerPosition.y - 1] == TileType.Wall)
                 {
@@ -124,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
 
-            case "up":
+            case PlayerInputs.Up:
                 // Checks if its the border of the grid a.k.a wall
                 if (trashScript.Grid[playerPosition.x, playerPosition.y + 1] == TileType.Wall)
                 {
@@ -137,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
 
-            case "pick":
+            case PlayerInputs.Pick:
                 // Checks if the tile the player is on has trash
                 if (trashScript.Grid[playerPosition.x, playerPosition.y] == TileType.Trash)
                 {
@@ -151,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
 
-            case "stay":
+            case PlayerInputs.Stay:
                 possible = true;
                 break;
 
@@ -175,36 +176,36 @@ public class PlayerMovement : MonoBehaviour
     /// Executes a move
     /// </summary>
     /// <param name="move">The name of the move to be executed</param>
-    private void ExecuteMove(string move)
+    private void ExecuteMove(PlayerInputs move)
     {
         switch (move)
         {
             // Moves the player left
-            case "left":
+            case PlayerInputs.Left:
                 transform.position = new Vector2(transform.position.x - 32, transform.position.y);
                 playerPosition.x -= 1;
                 break;
             // Moves the player right
-            case "right":
+            case PlayerInputs.Right:
                 transform.position = new Vector2(transform.position.x + 32, transform.position.y);
                 playerPosition.x += 1;
                 break;
             // Moves the player down
-            case "down":
+            case PlayerInputs.Down:
                 transform.position = new Vector2(transform.position.x, transform.position.y - 32);
                 playerPosition.y -= 1;
                 break;
             // Moves the player up
-            case "up":
+            case PlayerInputs.Up:
                 transform.position = new Vector2(transform.position.x, transform.position.y + 32);
                 playerPosition.y += 1;
                 break;
             // Destroys the trash under the player
-            case "pick":
+            case PlayerInputs.Pick:
                 Destroy(trashScript.GridGameObjects[playerPosition.x, playerPosition.y]);
                 break;
             // Doesn't do anything, could use default but we keep "stay" for consistency
-            case "stay":
+            case PlayerInputs.Stay:
                 break;
             default:
                 break;
