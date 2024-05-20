@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class TrashGame : MonoBehaviour
 {
@@ -12,6 +11,9 @@ public class TrashGame : MonoBehaviour
     [Tooltip("A number above 8 will have tiles offscren"), Header("[CONFIGURATIONS]"),
      SerializeField]
     private int gridSize;
+    [SerializeField] private bool seeded;
+    [SerializeField] private string seed;
+    private System.Random random;
     [SerializeField] private int maxMoves;
     [SerializeField, Range(0, 100)] private int chanceForTrash;
     public int GridSize => gridSize;
@@ -55,7 +57,7 @@ public class TrashGame : MonoBehaviour
     private ButtonsManager buttonsManager;
 
     // Start is called before the first frame update
-    void Start()
+    async void Start()
     {
         // Get the buttons manager
         buttonsManager = FindObjectOfType<ButtonsManager>();
@@ -80,6 +82,16 @@ public class TrashGame : MonoBehaviour
                 gridGameObjects[i, j] = null;
             }
         }
+
+        if(seeded)
+        {
+            random = new System.Random(seed.GetHashCode());
+        }
+        else
+            random = new System.Random(DateTime.Now.GetHashCode());
+
+        StartGame();
+        
 
         InitAI();
     }
@@ -136,7 +148,7 @@ public class TrashGame : MonoBehaviour
 
 
 
-    public void StartGameHuman()
+    public void StartGame()
     {
         // Restart all variables and objects
         gameOverUI.SetActive(false);
@@ -180,7 +192,7 @@ public class TrashGame : MonoBehaviour
                 // Spawn trash or leave tile empty based on chance chosen on inspector
                 else
                 {
-                    grid[i, j] = Random.Range(0, 100) < chanceForTrash ? TileType.Trash : TileType.Empty;
+                    grid[i, j] = random.Next(0, 100) < chanceForTrash ? TileType.Trash : TileType.Empty;
 
                     if (grid[i, j] == TileType.Trash)
                     {
@@ -211,8 +223,8 @@ public class TrashGame : MonoBehaviour
             Destroy(player);
 
         // Get random player position to start on that isn't on the borders
-        initialPlayerPosition.x = Random.Range(1, gridSize + 1);
-        initialPlayerPosition.y = Random.Range(1, gridSize + 1);
+        initialPlayerPosition.x = random.Next(1, gridSize + 1);
+        initialPlayerPosition.y = random.Next(1, gridSize + 1);
 
         // Instantite player at random position
         player = Instantiate(robot);

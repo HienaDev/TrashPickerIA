@@ -18,7 +18,7 @@ public class ButtonsManager : MonoBehaviour
     public void StartWithHuman()
     {
         isAI = false;
-        trashGame.StartGameHuman();
+        trashGame.StartGame();
         buttons.SetActive(false);
     }
 
