@@ -1,5 +1,8 @@
+using LibGameAI.NaiveBayes;
+using System;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class TrashGame : MonoBehaviour
 {
@@ -15,8 +18,10 @@ public class TrashGame : MonoBehaviour
     private int borderSize;
 
     // Keeps the states of the grid, 0 for empty, 1 for wall and 2 for trash
-    private int[,] grid;
-    public int[,] Grid => grid;
+    private TileType[,] grid;
+    public TileType[,] Grid => grid;
+
+    private Attrib tileDirection, tileType;
 
     // The prefabs to instantiate
     [SerializeField, Header("[PREFABS]")] private GameObject robot;
@@ -57,7 +62,7 @@ public class TrashGame : MonoBehaviour
 
         // Initalize the arrays
         gridGameObjects = new GameObject[borderSize, borderSize];
-        grid = new int[borderSize, borderSize];
+        grid = new TileType[borderSize, borderSize];
 
         // Fill objects with null to avoid errors
         for (int i = 0; i < borderSize; i++)
@@ -66,6 +71,26 @@ public class TrashGame : MonoBehaviour
             {
                 gridGameObjects[i, j] = null;
             }
+        }
+
+        InitAI();
+    }
+
+    private void InitAI()
+    {
+        tileDirection = new Attrib("tileDir", Enum.GetNames(typeof(TileDir)));
+        tileType = new Attrib("tileType", Enum.GetNames(typeof(TileType)));
+
+        foreach (string s in tileDirection.Values)
+        {
+            Debug.Log(s);
+        }
+
+        Debug.Log("");
+
+        foreach (string s in tileType.Values)
+        {
+            Debug.Log(s);
         }
     }
 
@@ -105,7 +130,7 @@ public class TrashGame : MonoBehaviour
                 // Put walls if we are on the border
                 if (i == 0 || i == borderSize - 1 || j == 0 || j == borderSize - 1)
                 {
-                    grid[i, j] = 1;
+                    grid[i, j] = TileType.Wall;
                     GameObject fixedObject = Instantiate(wall, transform);
                     fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
                     gridGameObjects[i, j] = fixedObject;
@@ -113,9 +138,9 @@ public class TrashGame : MonoBehaviour
                 // Spawn trash or leave tile empty based on chance chosen on inspector
                 else
                 {
-                    grid[i, j] = Random.Range(0, 100) < chanceForTrash ? 2 : 0;
+                    grid[i, j] = Random.Range(0, 100) < chanceForTrash ? TileType.Trash : TileType.Empty;
 
-                    if (grid[i, j] == 2)
+                    if (grid[i, j] == TileType.Trash)
                     {
                         GameObject fixedObject = Instantiate(trash, transform);
                         fixedObject.transform.position = new Vector2(i * 32 + 16, j * 32 + 16);
@@ -174,7 +199,7 @@ public class TrashGame : MonoBehaviour
         if (movesMade == maxMoves)
         {
             gameOverUI.SetActive(true);
-            gameOverUI.GetComponent<TextMeshProUGUI>().text = $"GAME OVER\n\nScore:\n{score}";
+            gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = $"GAME OVER\n\nScore:\n{score}";
             buttonsManager.TurnOnButtons();
             return true;
         }

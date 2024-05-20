@@ -27,60 +27,46 @@ public class PlayerMovement : MonoBehaviour
         // Move Right
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if (CheckPossibleMove("right"))
-            {
-                ExecuteMove("right");
-            }
+            CheckPossibleMove("right");
+            
         }
         // Move Left
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (CheckPossibleMove("left"))
-            {
-                ExecuteMove("left");
-            }
+            CheckPossibleMove("left");
+           
         }
         // Move Up
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (CheckPossibleMove("up"))
-            {
-                ExecuteMove("up");
-            }
-        }
+            CheckPossibleMove("up");
+                  }
         // Move Down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            if (CheckPossibleMove("down"))
-            {
-                ExecuteMove("down");
-            }
+            CheckPossibleMove("down");
+           
         }
         // Pick up trash
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (CheckPossibleMove("pick"))
-            {
-                ExecuteMove("pick");
-            }
+            CheckPossibleMove("pick");
+           
         }
         // Don't do anything
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (CheckPossibleMove("stay"))
-            {
-                ExecuteMove("stay");
-            }
+            CheckPossibleMove("stay");
+           
         }
         // Move randomly
         if (Input.GetKeyDown(KeyCode.R))
         {
             string randomMove = moves[Random.Range(0, moves.Length)];
             Debug.Log($"Random chose {randomMove}");
-            if (CheckPossibleMove(randomMove))
-            {
-                ExecuteMove(randomMove);
-            }
+            CheckPossibleMove(randomMove);
+            
+ 
         }
     }
 
@@ -91,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="move">The name of the move to be checked</param>
     /// <returns></returns>
-    private bool CheckPossibleMove(string move)
+    private void CheckPossibleMove(string move)
     {
 
         bool possible = false;
@@ -100,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         {
             case "left":
                 // Checks if its the border of the grid a.k.a wall
-                if (trashScript.Grid[playerPosition.x - 1, playerPosition.y] == 1)
+                if (trashScript.Grid[playerPosition.x - 1, playerPosition.y] == TileType.Wall)
                 {
                     possible = false;
                     trashScript.AddScore(-5);
@@ -114,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
             case "right":
                 // Checks if its the border of the grid a.k.a wall
-                if (trashScript.Grid[playerPosition.x + 1, playerPosition.y] == 1)
+                if (trashScript.Grid[playerPosition.x + 1, playerPosition.y] == TileType.Wall)
                 {
                     possible = false;
                     trashScript.AddScore(-5);
@@ -127,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
             case "down":
                 // Checks if its the border of the grid a.k.a wall
-                if (trashScript.Grid[playerPosition.x, playerPosition.y - 1] == 1)
+                if (trashScript.Grid[playerPosition.x, playerPosition.y - 1] == TileType.Wall)
                 {
                     possible = false;
                     trashScript.AddScore(-5);
@@ -140,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
 
             case "up":
                 // Checks if its the border of the grid a.k.a wall
-                if (trashScript.Grid[playerPosition.x, playerPosition.y + 1] == 1)
+                if (trashScript.Grid[playerPosition.x, playerPosition.y + 1] == TileType.Wall)
                 {
                     possible = false;
                     trashScript.AddScore(-5);
@@ -153,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
 
             case "pick":
                 // Checks if the tile the player is on has trash
-                if (trashScript.Grid[playerPosition.x, playerPosition.y] == 2)
+                if (trashScript.Grid[playerPosition.x, playerPosition.y] == TileType.Trash)
                 {
                     trashScript.AddScore(10);
                     possible = true;
@@ -180,7 +166,9 @@ public class PlayerMovement : MonoBehaviour
             gameObject.GetComponent<PlayerMovement>().enabled = false;
         }
 
-        return possible;
+        if (possible)
+            ExecuteMove(move);
+
     }
 
     /// <summary>
