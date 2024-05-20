@@ -1,3 +1,5 @@
+using LibGameAI.NaiveBayes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,70 +13,118 @@ public class PlayerMovement : MonoBehaviour
     // Saves the possible movements for the random move
     private PlayerInputs[] moves;
 
+    [SerializeField] private float timeForEachAITurn;
+    private WaitForSeconds waitForSecondsAI;
+
     // Start is called before the first frame update
     void Start()
     {
         trashScript = FindObjectOfType<TrashGame>();
 
+        waitForSecondsAI = new WaitForSeconds(timeForEachAITurn);
+
+        Debug.Log(timeForEachAITurn);
+
         playerPosition = trashScript.InitialPlayerPosition;
 
         moves = new PlayerInputs[] { PlayerInputs.Left, PlayerInputs.Right, PlayerInputs.Up, PlayerInputs.Down };
+
+        if(trashScript.AI)
+        {
+            StartCoroutine(AIPlay());
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Move Right
-        if (Input.GetKeyDown(KeyCode.D))
+        // If it's not AI
+        if (!trashScript.AI)
         {
-            trashScript.UpdateAI(PlayerInputs.Right, playerPosition);
-            CheckPossibleMove(PlayerInputs.Right);
-            
+            // Move Right
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                trashScript.UpdateAI(PlayerInputs.Right, playerPosition);
+                CheckPossibleMove(PlayerInputs.Right);
+            }
+            // Move Left
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                trashScript.UpdateAI(PlayerInputs.Left, playerPosition);
+                CheckPossibleMove(PlayerInputs.Left);
+            }
+            // Move Up
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                trashScript.UpdateAI(PlayerInputs.Up, playerPosition);
+                CheckPossibleMove(PlayerInputs.Up);
+            }
+            // Move Down
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                trashScript.UpdateAI(PlayerInputs.Down, playerPosition);
+                CheckPossibleMove(PlayerInputs.Down);
+            }
+            // Pick up trash
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                trashScript.UpdateAI(PlayerInputs.Pick, playerPosition);
+                CheckPossibleMove(PlayerInputs.Pick);
+            }
+            // Don't do anything
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                trashScript.UpdateAI(PlayerInputs.Stay, playerPosition);
+                CheckPossibleMove(PlayerInputs.Stay);
+            }
+            // Move randomly
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                trashScript.UpdateAI(PlayerInputs.Random, playerPosition);
+                PlayerInputs randomMove = moves[UnityEngine.Random.Range(0, moves.Length)];
+                Debug.Log($"Random chose {randomMove}");
+                CheckPossibleMove(randomMove);
+            }
         }
-        // Move Left
-        if (Input.GetKeyDown(KeyCode.A))
+
+    }
+
+
+    private IEnumerator AIPlay()
+    {
+        
+        while (!trashScript.GameOver)
         {
-            trashScript.UpdateAI(PlayerInputs.Left, playerPosition);
-            CheckPossibleMove(PlayerInputs.Left);
-           
+            Debug.Log("AI Playing");
+
+            string move;
+            PlayerInputs enumMove;
+            move = trashScript.NbClassifier.Predict(new Dictionary<Attrib, string>()
+            {
+                {trashScript.TileUp, trashScript.Grid[playerPosition.x, playerPosition.y + 1].ToString()},
+                {trashScript.TileRight, trashScript.Grid[playerPosition.x + 1, playerPosition.y].ToString()},
+                {trashScript.TileDown,trashScript. Grid[playerPosition.x, playerPosition.y - 1].ToString()},
+                {trashScript.TileLeft, trashScript.Grid[playerPosition.x - 1, playerPosition.y].ToString()},
+                {trashScript.TileMiddle, trashScript.Grid[playerPosition.x, playerPosition.y].ToString()}
+            });
+
+            Debug.Log("AI chose " + move);
+            Enum.TryParse<PlayerInputs>(move, out enumMove);
+
+            if(enumMove == PlayerInputs.Random)
+            {
+                PlayerInputs randomMove = moves[UnityEngine.Random.Range(0, moves.Length)];
+                Debug.Log($"Random chose {randomMove}");
+                CheckPossibleMove(randomMove);
+            }
+            else
+                CheckPossibleMove(enumMove);
+
+            yield return waitForSecondsAI;
+
+            Debug.Log("AI Turn Done");
         }
-        // Move Up
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            trashScript.UpdateAI(PlayerInputs.Up, playerPosition);
-            CheckPossibleMove(PlayerInputs.Up);
-                  }
-        // Move Down
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            trashScript.UpdateAI(PlayerInputs.Down, playerPosition);
-            CheckPossibleMove(PlayerInputs.Down);
-           
-        }
-        // Pick up trash
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            trashScript.UpdateAI(PlayerInputs.Pick, playerPosition);
-            CheckPossibleMove(PlayerInputs.Pick);
-           
-        }
-        // Don't do anything
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            trashScript.UpdateAI(PlayerInputs.Stay, playerPosition);
-            CheckPossibleMove(PlayerInputs.Stay);
-           
-        }
-        // Move randomly
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            trashScript.UpdateAI(PlayerInputs.Random, playerPosition);
-            PlayerInputs randomMove = moves[Random.Range(0, moves.Length)];
-            Debug.Log($"Random chose {randomMove}");
-            CheckPossibleMove(randomMove);
-            
- 
-        }
+        
     }
 
     /// <summary>
@@ -113,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
                     trashScript.AddScore(-5);
                 }
                 else
-                { 
+                {
                     possible = true;
                 }
                 break;
@@ -126,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
                     trashScript.AddScore(-5);
                 }
                 else
-                {   
+                {
                     possible = true;
                 }
                 break;
@@ -149,6 +199,7 @@ public class PlayerMovement : MonoBehaviour
                 if (trashScript.Grid[playerPosition.x, playerPosition.y] == TileType.Trash)
                 {
                     trashScript.AddScore(10);
+                    trashScript.RemoveTrash(playerPosition);
                     possible = true;
                 }
                 else

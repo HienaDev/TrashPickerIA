@@ -11,10 +11,11 @@ public class TrashGame : MonoBehaviour
     [Tooltip("A number above 8 will have tiles offscren"), Header("[CONFIGURATIONS]"),
      SerializeField]
     private int gridSize;
-    [SerializeField] private bool seeded;
+    [SerializeField] private int maxMoves;
+    [SerializeField, Header("Rng")] private bool seeded;
     [SerializeField] private string seed;
     private System.Random random;
-    [SerializeField] private int maxMoves;
+    
     [SerializeField, Range(0, 100)] private int chanceForTrash;
     public int GridSize => gridSize;
     // The size of the grid + 2 to account for the walls
@@ -26,9 +27,14 @@ public class TrashGame : MonoBehaviour
 
     // AI variables
     private Attrib tileUp, tileRight, tileDown, tileLeft, tileMiddle;
+    public Attrib TileUp => tileUp;
+    public Attrib TileRight => tileRight;
+    public Attrib TileDown => tileDown;
+    public Attrib TileLeft => tileLeft;
+    public Attrib TileMiddle => tileMiddle;
     public NaiveBayesClassifier NbClassifier { get; private set; }
     private int aiObservations = 0;
-    public bool AI { get; private set; }
+    public bool AI { get; set; }
 
     // The prefabs to instantiate
     [SerializeField, Header("[PREFABS]")] private GameObject robot;
@@ -52,17 +58,21 @@ public class TrashGame : MonoBehaviour
     // The UI objects
     [SerializeField, Header("[UI]")] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI movesUI;
+    [SerializeField] private TextMeshProUGUI aiObservationsUI;
     [SerializeField] private GameObject gameOverUI;
+    public bool GameOver { get; private set; }
 
     private ButtonsManager buttonsManager;
 
     // Start is called before the first frame update
-    async void Start()
+    void Start()
     {
         // Get the buttons manager
         buttonsManager = FindObjectOfType<ButtonsManager>();
 
         player = null;
+
+        GameOver = false;
 
         // Get the border size
         borderSize = gridSize + 2;
@@ -82,16 +92,6 @@ public class TrashGame : MonoBehaviour
                 gridGameObjects[i, j] = null;
             }
         }
-
-        if(seeded)
-        {
-            random = new System.Random(seed.GetHashCode());
-        }
-        else
-            random = new System.Random(DateTime.Now.GetHashCode());
-
-        StartGame();
-        
 
         InitAI();
     }
@@ -150,12 +150,21 @@ public class TrashGame : MonoBehaviour
 
     public void StartGame()
     {
+
+        if (seeded)
+        {
+            random = new System.Random(seed.GetHashCode());
+        }
+        else
+            random = new System.Random(DateTime.Now.GetHashCode());
+
         // Restart all variables and objects
         gameOverUI.SetActive(false);
         score = 0;
         movesMade = 0;
         scoreUI.text = $"Score: {score}";
         movesUI.text = $"Moves: {movesMade}/{maxMoves}";
+        GameOver = false;
 
         // Destroy all objects from a previous run
         foreach (GameObject objects in gridGameObjects)
@@ -231,6 +240,8 @@ public class TrashGame : MonoBehaviour
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
     }
 
+    public void RemoveTrash(Vector2Int pos) => grid[pos.x, pos.y] = 0;
+
     public void UpdateAI(PlayerInputs move, Vector2Int playerPosition)
     {
         NbClassifier.Update(
@@ -241,7 +252,7 @@ public class TrashGame : MonoBehaviour
                 {tileRight, grid[playerPosition.x + 1, playerPosition.y].ToString()},
                 {tileDown, grid[playerPosition.x, playerPosition.y - 1].ToString()},
                 {tileLeft, grid[playerPosition.x - 1, playerPosition.y].ToString()},
-                {tileMiddle, grid[playerPosition.x, playerPosition.y].ToString()},
+                {tileMiddle, grid[playerPosition.x, playerPosition.y].ToString()}
             }
         );
 
@@ -253,7 +264,9 @@ public class TrashGame : MonoBehaviour
             $"Player chose {move.ToString()}");
 
         aiObservations++;
+        aiObservationsUI.text = $"AI Observations: {aiObservations}";
     }
+
 
     /// <summary>
     /// Add score value and change score UI
@@ -279,6 +292,7 @@ public class TrashGame : MonoBehaviour
             gameOverUI.SetActive(true);
             gameOverUI.GetComponentInChildren<TextMeshProUGUI>().text = $"GAME OVER\n\nScore:\n{score}";
             buttonsManager.TurnOnButtons();
+            GameOver = true;
             return true;
         }
         return false;
