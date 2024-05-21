@@ -169,7 +169,15 @@ Durante o desenvolvimento do projeto, foram identificados alguns resultados ines
 
 ## Conclusão
 
+O desenvolvimento deste projeto permitiu-nos explorar e implementar técnicas de *machine learning*, especificamente o uso do classificador *Naive Bayes*, para criar um agente de IA que imita o comportamento humano num jogo de apanhar lixo. Através da biblioteca LibGameAI.NaiveBayes, treinámos a IA para observar e replicar as ações do jogador humano.
+
+Os resultados mostraram que, com um número adequado de observações, a IA conseguiu alcançar pontuações comparáveis às dos jogadores humanos, atingindo, em alguns casos, a pontuação máxima de 100 pontos em 20 jogadas. Isto valida a eficácia do classificador *Naive Bayes* na aprendizagem e imitação de comportamentos em tempo real.
+
+Os testes mostraram que a IA é capaz de replicar eficazmente o comportamento humano, adaptando-se às diferentes situações da grelha de jogo e tomando decisões informadas com base nas observações. No entanto, o desempenho da IA pode variar dependendo da distribuição aleatória do lixo na grelha, o que destaca a importância de cenários de treino variados para melhorar a robustez do agente.
+
 ## Agradecimentos
+
+Agradecemos ao professor Nuno Fachada pela orientação e fornecimento da biblioteca LibGameAI.NaiveBayes, essencial para a implementação do nosso projeto.
 
 ## Referências
 
