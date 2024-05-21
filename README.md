@@ -79,7 +79,7 @@ Estas ações são registadas e atualizadas no jogo. A execução das ações in
 - **Apanhar Lixo:** Recompensa o jogador com 10 pontos.
 - **Tentar Apanhar Lixo numa Célula Vazia:** Penaliza o jogador com -1 ponto.
 
-O movimento do jogador pode ser instantâneo ou animado, dependendo da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição.
+O movimento do jogador pode ser instantâneo ou animado, dependendo da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição. O jogador pode ainda definir o tempo da animação de movimento (*PlayerMovement.cs - howMuchToMovePerFrame*) definindo o número de frames necessários para completar um movimento, quanto maior o número de frames, mais rápida será a animação.
 
 #### **Parâmetros Configuráveis**
 
@@ -87,6 +87,7 @@ No editor do Unity, podem ser configurados os seguintes parâmetros que afetam o
 
 - **Máximo de Movimentos (*TrashGame.cs - maxMoves*):** Define o número máximo de movimentos que o jogador pode realizar numa sessão de jogo.
 - **Movimento Instantâneo do Jogador (*TrashGame.cs - playerInstantMovement*):** Permite que o movimento do jogador seja instantâneo, sem animações de transição.
+- **Tempo de Animação de Movimento (*PlayerMovement.cs - howMuchToMovePerFrame*):** Define o número de frames necessários para completar um movimento, ajustando a velocidade da animação.
 
 ![PLACEHOLDER PARA PARÂMETROS DO JOGADOR]()
 
@@ -94,15 +95,15 @@ No editor do Unity, podem ser configurados os seguintes parâmetros que afetam o
 
 ![PLACEHOLDER PARA MODELO DO LUSO]()
 
-### **Modelo do lixo**
+#### **Modelo do lixo**
 
 ![PLACEHOLDER PARA MODELO DO LIXO]()
 
-#### Jogador Humano
+### Jogador Humano
 
 O jogador humano controla o Luso utilizando as teclas WASD para movimentação e a tecla E para apanhar lixo. A tecla Espaço permite que o jogador permaneça parado, enquanto a tecla R faz com que o jogador se mova aleatoriamente numa das direções disponíveis.
 
-#### Jogador IA
+### Jogador IA
 
 Enquanto o jogador humano controla Luso, o agente de IA regista as ações realizadas em cada situação específica da grelha. Luso está numa vizinhança de *Von Neumann* (4 vizinhos + célula atual), o que significa que pode ver a sua célula atual e as células adjacentes (cima, baixo, esquerda, direita). Estas células podem estar em três estados: vazia, com lixo ou parede, resultando em 162 situações diferentes possíveis.
 
@@ -110,7 +111,15 @@ Enquanto o jogador humano controla Luso, o agente de IA regista as ações reali
 
 Essencialmente, o que o classificador *Naive Bayes* faz, neste caso, é, para cada uma destas situações, observar qual é a ação efetuada pelo humano, tentando depois replicar esse comportamento quando for a sua vez de jogar, por isso é importante que o jogador humano jogue um X número de vezes para a IA aprender com o seu comportamento.
 
-Quando a IA está a jogar, utiliza as probabilidades calculadas pelo classificador *Naive Bayes* para decidir a ação a tomar em cada passo. A IA realiza estas ações automaticamente com uma pausa de meio segundo entre cada passo, para "imitar" o comportamento previamente observado do jogador humano.
+Quando a IA está a jogar, utiliza as probabilidades calculadas pelo classificador *Naive Bayes* para decidir a ação a tomar em cada passo. A IA realiza estas ações automaticamente com uma pausa definida pelo utilizador (*PlayerMovement - timeForEachAITurn*) entre cada passo, para "imitar" o comportamento previamente observado do jogador humano.
+
+#### **Parâmetros Configuráveis**
+
+Os seguintes parâmetros da IA podem ser definidos no editor do Unity:
+
+- **Número de Tempo entre Turnos da IA (*PlayerMovement.cs - timeForEachAITurn*):** Define o tempo de pausa entre cada ação da IA, permitindo ajustar a velocidade de execução da IA.
+
+![PLACEHOLDER PARA PARÂMETROS DA IA]()
 
 ## Resultados e discussão
 
