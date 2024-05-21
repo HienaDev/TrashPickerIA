@@ -61,7 +61,7 @@ Os seguintes parâmetros da grelha podem ser definidos no editor do Unity:
 
 ### Jogador
 
-O jogador pode ser controlado de duas formas: pelo jogador humano ou por um agente de IA. Ambas as formas partilham algumas funcionalidades comuns, mas diferem na forma como as ações são executadas e controladas.
+O jogador pode ser controlado de duas formas: pelo jogador humano ou por um agente de IA. Ambas as formas partilham algumas funcionalidades comuns, mas diferem na forma como as ações são executadas e controladas. O jogador ao inicio é colocado numa posição aleatória na grelha, e o seu objetivo é apanhar o lixo presente nas células da grelha e fazer o máximo de pontuação possível.
 
 Ambos os jogadores, humano e IA, podem realizar as seguintes ações:
 
@@ -127,7 +127,7 @@ A UI permite iniciar o jogo, escolher o modo de jogo (jogador humano ou IA), e v
 
 O menu principal, apresenta botões que permitem ao jogador iniciar o jogo com um jogador humano ou com a IA, bem como sair do jogo.
 
-Botões de Início de Jogo:
+#### **Botões de Início de Jogo:**
 
 - **Iniciar com Jogador Humano (*ButtonsManager - StartWithHuman*):** Inicia o jogo com controlo humano. Define AI como *false* e inicia o jogo.
 - **Iniciar com IA (*ButtonsManager - StartWithAI*):** Inicia o jogo com controlo da IA. Define AI como *true* e inicia o jogo.
@@ -145,12 +145,22 @@ Quando o jogo termina, a UI exibe a pontuação final do jogador, destacando o d
 
 ## Resultados e discussão
 
+### Resultados
+
+A melhor pontuação possível em 20 jogadas é 100 pontos, considerando que o jogador apanha uma peça de lixo em cada duas jogadas (uma para se mover e outra para apanhar o lixo). Para atingir essa pontuação, é necessário que haja sempre pelo menos um lixo numa das células vizinhas à célula atual do jogador.
+
+Após um número de observações adequado, tendo o jogador estado pelo menos uma vez em cada célula interna da grelha, a IA demonstrou capacidade de imitar o comportamento humano, alcançando pontuações comparáveis. Em alguns casos, a IA conseguiu igualar a pontuação máxima de 100 pontos.
+
+Os resultados mostram que, com observações suficiente, a IA pode replicar eficazmente as decisões do jogador humano, atingindo a pontuação máxima possível. Este desempenho valida a eficácia do classificador *Naive Bayes* utilizado no projeto.
+
+### Discussão
+
 ## Conclusão
 
 ## Agradecimentos
 
 ## Referências
 
-[1] Zohro’iyah, H., Nasution, S., & Nugrahaeni, R. (2020, March 16). Determining NPC behavior in Maze Chase game using Naïve Bayes algorithm | IEEE conference publication | IEEE xplore. https://ieeexplore.ieee.org/abstract/document/9034640 
-[2] Pupkin. (2021, September 23). Tech Dungeon: Roguelite - Asset Pack by pupkin. itch.io. https://trevor-pupkin.itch.io/tech-dungeon-roguelite 
-[3] BTL Games. (2021, September 10). Trash and Junk Asset Pack by BTL Games. itch.io. https://btl-games.itch.io/trash-and-junk-asset-pack
+- [1] Zohro’iyah, H., Nasution, S., & Nugrahaeni, R. (2020, March 16). Determining NPC behavior in Maze Chase game using Naïve Bayes algorithm | IEEE conference publication | IEEE xplore. https://ieeexplore.ieee.org/abstract/document/9034640 
+- [2] Pupkin. (2021, September 23). Tech Dungeon: Roguelite - Asset Pack by pupkin. itch.io. https://trevor-pupkin.itch.io/tech-dungeon-roguelite 
+- [3] BTL Games. (2021, September 10). Trash and Junk Asset Pack by BTL Games. itch.io. https://btl-games.itch.io/trash-and-junk-asset-pack

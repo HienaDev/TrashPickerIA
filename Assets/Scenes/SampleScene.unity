@@ -739,7 +739,7 @@ MonoBehaviour:
   gridSize: 6
   maxMoves: 20
   playerInstantMovement: 0
-  seeded: 1
+  seeded: 0
   seed: 10
   chanceForTrash: 40
   robot: {fileID: 8327002712645369162, guid: 133a108de636c0e41aea896fbe513d64, type: 3}
