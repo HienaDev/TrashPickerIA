@@ -35,6 +35,26 @@ Os resultados da implementação mostraram que o *Naive Bayes* é eficaz em prev
 
 ## Metodologia
 
+A implementação deste trabalho foi feita em 2D, através do *game engine* Unity. O jogo ocorre numa grelha onde o personagem Luso se move, com um certo número de jogadas, para apanhar lixo. O objetivo é maximizar a pontuação ao apanhar o máximo de lixo possível, e evitar movimentos que resultem em penalizações.
+
+### Grelha
+
+A grelha é composta por uma matriz bidimensional que representa diferentes tipos de células, incluindo paredes, células vazias e células com lixo.
+
+A grelha é inicializada com um tamanho específico, que pode ser definido pelo utilizador através do editor do Unity. Este tamanho (*TrashGame.cs - gridSize*) determina a dimensão da grelha de jogo. Assim, se o tamanho da grelha definido pelo utilizador for 8, o tamanho total da grelha será 8x8.
+
+Durante a inicialização do jogo, a grelha é preenchida com paredes nas bordas e, em seguida, as células internas são atribuídas como vazias ou contendo lixo com base na probabilidade definida pelo utilizador (*TrashGame.cs - chanceForTrash*).
+
+#### **Parâmetros Configuráveis**
+
+Os seguintes parâmetros da grelha podem ser definidos no editor do Unity:
+
+- Tamanho da Grelha (*TrashGame.cs - gridSize*): Determina o número de células na grelha. O tamanho pode ser ajustado para diferentes valores, adequando-se às necessidades do jogo.
+- *Seed* Aleatória (*TrashGame.cs - seeded* e *TrashGame.cs - seed*): Permite a utilização de uma *seed* específica para a geração aleatória da grelha, o que garante que a mesma configuração possa ser replicada em diferentes execuções do jogo.
+- Probabilidade de Lixo (*TrashGame.cs - chanceForTrash*): Define a probabilidade de uma célula conter lixo, expressa como uma percentagem de 0 a 100.
+
+![PLACEHOLDER PARA PARÂMETROS DA GRELHA]()
+
 ## Resultados e discussão
 
 ## Conclusão

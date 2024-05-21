@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f89c39939949f488335743d3ecba5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 5
+  gridSize: 6
   maxMoves: 20
   playerInstantMovement: 0
   seeded: 0
