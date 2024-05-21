@@ -53,11 +53,11 @@ Os seguintes parâmetros da grelha podem ser definidos no editor do Unity:
 - ***Seed* Aleatória (*TrashGame.cs - seeded* e *TrashGame.cs - seed*)**: Permite a utilização de uma *seed* específica para a geração aleatória da grelha, o que garante que a mesma configuração possa ser replicada em diferentes execuções do jogo.
 - **Probabilidade de Lixo (*TrashGame.cs - chanceForTrash*)**: Define a probabilidade de uma célula conter lixo, expressa como uma percentagem de 0 a 100.
 
-![PLACEHOLDER PARA PARÂMETROS DA GRELHA]()
+![Parametros da Grelha](./Images/GridParameters.png)
 
 #### **Modelo da Grelha**
 
-![PLACEHOLDER PARA MODELO DA GRELHA]()
+![Modelo da Grelha](./Images/GridModel.png)
 
 ### Jogador
 
@@ -89,15 +89,15 @@ No editor do Unity, podem ser configurados os seguintes parâmetros que afetam o
 - **Movimento Instantâneo do Jogador (*TrashGame.cs - playerInstantMovement*):** Permite que o movimento do jogador seja instantâneo, sem animações de transição.
 - **Tempo de Animação de Movimento (*PlayerMovement.cs - howMuchToMovePerFrame*):** Define o número de frames necessários para completar um movimento, ajustando a velocidade da animação.
 
-![PLACEHOLDER PARA PARÂMETROS DO JOGADOR]()
+![Parametros do Jogador](./Images/PlayerParameters.png)
 
 #### **Modelo do Luso**
 
-![PLACEHOLDER PARA MODELO DO LUSO]() [2](https://trevor-pupkin.itch.io/tech-dungeon-roguelite)
+![Modelo do Luso](./Images/LusoModel.png) [2](https://trevor-pupkin.itch.io/tech-dungeon-roguelite)
 
 #### **Modelo do lixo**
 
-![PLACEHOLDER PARA MODELO DO LIXO]() [3](https://btl-games.itch.io/trash-and-junk-asset-pack)
+![Modelo do Lixo](./Images/TrashModel.png) [3](https://btl-games.itch.io/trash-and-junk-asset-pack)
 
 ### Jogador Humano
 
@@ -107,7 +107,7 @@ O jogador humano controla o Luso utilizando as teclas WASD para movimentação e
 
 Enquanto o jogador humano controla Luso, o agente de IA regista as ações realizadas em cada situação específica da grelha. Luso está numa vizinhança de *Von Neumann* (4 vizinhos + célula atual), o que significa que pode ver a sua célula atual e as células adjacentes (cima, baixo, esquerda, direita). Estas células podem estar em três estados: vazia, com lixo ou parede, resultando em 162 situações diferentes possíveis.
 
-![PLACEHOLDER PARA VIZINHANÇA DE VON NEUMANN]()
+![Modelo de Vizinhança de Von Neumann](./Images/VonNeumann.png)
 
 Essencialmente, o que o classificador *Naive Bayes* faz, neste caso, é, para cada uma destas situações, observar qual é a ação efetuada pelo humano, tentando depois replicar esse comportamento quando for a sua vez de jogar, por isso é importante que o jogador humano jogue um X número de vezes para a IA aprender com o seu comportamento.
 
@@ -119,7 +119,7 @@ Os seguintes parâmetros da IA podem ser definidos no editor do Unity:
 
 - **Número de Tempo entre Turnos da IA (*PlayerMovement.cs - timeForEachAITurn*):** Define o tempo de pausa entre cada ação da IA, permitindo ajustar a velocidade de execução da IA.
 
-![PLACEHOLDER PARA PARÂMETROS DA IA]()
+![Parametros da IA](./Images/AIParameters.png)
 
 ### UI
 
@@ -133,15 +133,15 @@ O menu principal, apresenta botões que permitem ao jogador iniciar o jogo com u
 - **Iniciar com IA (*ButtonsManager - StartWithAI*):** Inicia o jogo com controlo da IA. Define AI como *true* e inicia o jogo.
 - **Botão de Sair (*ButtonsManager - QuitGame*):** Fecha o jogo se estiver a ser executado como uma aplicação *standalone*, ou termina a execução se estiver no editor do Unity.
 
-![PLACEHOLDER PARA UI NO MENU PRINCIPAL]()
+![Menu Principal](./Images/UIMainMenu.png)
 
 Os botões do menu são desativados uma vez que o jogo começa, prevenindo interferências durante a sessão de jogo. Dentro o é exibido a pontuação, o número de movimentos restantes durante o jogo, movimentos feitos pelo jogador / movimentos máximos e o número de observações feitas pela IA.
 
-![PLACEHOLDER PARA UI DENTRO DE JOGO]()
+![UI de Jogo](./Images/UIInGame.png)
 
 Quando o jogo termina, a UI exibe a pontuação final do jogador, destacando o desempenho obtido, juntamente com as 6 melhores pontuações obtidas naquela sessão de jogo. E voltam a ser ativados os botões do menu principal.
 
-![PLACEHOLDER PARA UI DE FIM DE JOGO]()
+![UI de Fim de Jogo](./Images/UIEndGame.png)
 
 ## Resultados e discussão
 

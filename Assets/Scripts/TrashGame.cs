@@ -22,6 +22,11 @@ public class TrashGame : MonoBehaviour
     private System.Random random;
 
     /// <summary>
+    /// Player can move instantly or not.
+    /// </summary>
+    public bool PlayerInstantMovement => playerInstantMovement;
+
+    /// <summary>
     /// The size of the grid.
     /// </summary>
     public int GridSize => gridSize;
@@ -259,7 +264,6 @@ public class TrashGame : MonoBehaviour
 
         // Instantite player at random position
         player = Instantiate(robot);
-        player.GetComponent<PlayerMovement>().InstantMovement = playerInstantMovement;
         player.transform.position = new Vector2(initialPlayerPosition.x * 32 + 16, initialPlayerPosition.y * 32 + 16);
     }
 

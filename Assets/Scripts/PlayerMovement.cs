@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInputs[] moves;
     private WaitForSeconds waitForSecondsAI;
     private bool doneMoving;
-    public bool InstantMovement;
     private Animator animator;
 
     /// <summary>
@@ -254,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // Moves the player left
             case PlayerInputs.Left:
-                if (InstantMovement)
+                if (trashScript.PlayerInstantMovement)
                     transform.position = new Vector2(transform.position.x - 32, transform.position.y);
                 else
                     StartCoroutine(MoveRobot(new Vector2(transform.position.x - 32, transform.position.y)));
@@ -263,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             // Moves the player right
             case PlayerInputs.Right:
-                if (InstantMovement)
+                if (trashScript.PlayerInstantMovement)
                     transform.position = new Vector2(transform.position.x + 32, transform.position.y);
                 else
                     StartCoroutine(MoveRobot(new Vector2(transform.position.x + 32, transform.position.y)));
@@ -271,7 +270,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             // Moves the player down
             case PlayerInputs.Down:
-                if (InstantMovement)
+                if (trashScript.PlayerInstantMovement)
                     transform.position = new Vector2(transform.position.x, transform.position.y - 32);
                 else
                     StartCoroutine(MoveRobot(new Vector2(transform.position.x, transform.position.y - 32)));
@@ -280,7 +279,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             // Moves the player up
             case PlayerInputs.Up:
-                if (InstantMovement)
+                if (trashScript.PlayerInstantMovement)
                     transform.position = new Vector2(transform.position.x, transform.position.y + 32);
                 else
                     StartCoroutine(MoveRobot(new Vector2(transform.position.x, transform.position.y + 32)));
