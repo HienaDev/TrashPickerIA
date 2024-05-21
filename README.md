@@ -7,6 +7,54 @@
 
 ## Divisão
 
+#### António Rodrigues
+
+- **Implementação**:
+    - **Grelha**:
+        - Implementação da grelha bidimensional.
+        - Definição dos diferentes tipos de células (paredes, células vazias, células com lixo).
+    - **Jogador**:
+        - Desenvolvimento das funcionalidades do jogador.
+        - Implementação das ações de movimento e interação com a grelha.
+    - **Jogador Humano**:
+        - Controlo do Luso pelo jogador humano utilizando as teclas e outras teclas de interação.
+        - Implementação das ações de movimento, apanhar lixo e permanecer parado.
+    - **Jogador IA**:
+        - Implementação do agente de IA através do classificador *Naive Bayes*.
+        - Treino da IA para imitar o comportamento humano.
+    - **UI**:
+        - Implementação dos elementos de pontuação, número de movimentos e notificações de fim de jogo.
+    - **Comentários XML**:
+        - Documentação do código com comentários XML.
+
+#### Rafael José
+
+- **Implementação**:
+    - **Menu Principal**:
+        - Implementação dos botões de início de jogo, escolha de modo (humano ou IA) e sair do jogo.
+    - **Comentários XML**:
+        - Documentação do código com comentários XML.
+- **Relatório**:
+    - **Introdução**:
+        - Descrição do projeto e objetivos.
+    - **Metodologia**:
+        - Grelha
+        - **Jogador**:
+            - Jogador Humano
+            - Jogador IA
+        - UI
+    - **Resultados e Discussão**:
+        - Apresentação dos resultados obtidos.
+        - Interpretação dos resultados e discussão de resultados inesperados.
+    - **Conclusão**:
+        - Resumo dos principais achados e validação da abordagem utilizada.
+    - **Agradecimentos**:
+        - Reconhecimento às contribuições e suporte recebidos.
+    - **Referências**:
+        - Citação das fontes e artigos utilizados.
+    - **Imagens**:
+        - Inclusão de capturas de ecrã e diagramas ilustrativos.
+
 ## Introdução
 
 O nosso projeto visa criar um jogo em Unity onde o personagem Luso, um robô, apanha lixo numa grelha quadrangular, a qual o utilizador pode definir o seu tamanho. O Luso pode ser controlado por um humano ou por um agente de IA que aprende com o comportamento humano, por isso é importante que o jogador jogue algumas vezes para a IA aprender com o seu comportamento antes de a colocar a jogar sozinha, para obter os melhores resultados possíveis.
@@ -79,7 +127,7 @@ Estas ações são registadas e atualizadas no jogo. A execução das ações in
 - **Apanhar Lixo:** Recompensa o jogador com 10 pontos.
 - **Tentar Apanhar Lixo numa Célula Vazia:** Penaliza o jogador com -1 ponto.
 
-O movimento do jogador pode ser instantâneo ou animado, dependendo da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição. O jogador pode ainda definir o tempo da animação de movimento (*PlayerMovement.cs - howMuchToMovePerFrame*) definindo o número de frames necessários para completar um movimento, quanto maior o número de frames, mais rápida será a animação.
+O movimento do jogador pode ser instantâneo ou animado, que depende da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição. O jogador pode ainda definir o tempo da animação de movimento (*PlayerMovement.cs - howMuchToMovePerFrame*) definindo o número de frames necessários para completar um movimento, quanto maior o número de frames, mais rápida será a animação.
 
 #### **Parâmetros Configuráveis**
 
@@ -141,7 +189,7 @@ Os botões do menu são desativados uma vez que o jogo começa, prevenindo inter
 
 Quando o jogo termina, a UI exibe a pontuação final do jogador, destacando o desempenho obtido, juntamente com as 6 melhores pontuações obtidas naquela sessão de jogo. E voltam a ser ativados os botões do menu principal.
 
-![UI de Fim de Jogo](./Images/UIEndGame.png)
+![UI de Fim de Jogo](./Images/UIGameOver.png)
 
 ## Resultados e discussão
 
