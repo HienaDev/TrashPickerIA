@@ -34,6 +34,7 @@
         - Implementação dos botões de início de jogo, escolha de modo (humano ou IA) e sair do jogo.
     - **Comentários XML**:
         - Documentação do código com comentários XML.
+- **Pesquisa do artigo**
 - **Relatório**:
     - **Introdução**:
         - Descrição do projeto e objetivos.
