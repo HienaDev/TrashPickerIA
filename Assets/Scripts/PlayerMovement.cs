@@ -297,8 +297,6 @@ public class PlayerMovement : MonoBehaviour
             default:
                 break;
         }
-
-
     }
 
     /// <summary>

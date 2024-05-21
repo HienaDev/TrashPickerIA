@@ -49,11 +49,68 @@ Durante a inicialização do jogo, a grelha é preenchida com paredes nas bordas
 
 Os seguintes parâmetros da grelha podem ser definidos no editor do Unity:
 
-- Tamanho da Grelha (*TrashGame.cs - gridSize*): Determina o número de células na grelha. O tamanho pode ser ajustado para diferentes valores, adequando-se às necessidades do jogo.
-- *Seed* Aleatória (*TrashGame.cs - seeded* e *TrashGame.cs - seed*): Permite a utilização de uma *seed* específica para a geração aleatória da grelha, o que garante que a mesma configuração possa ser replicada em diferentes execuções do jogo.
-- Probabilidade de Lixo (*TrashGame.cs - chanceForTrash*): Define a probabilidade de uma célula conter lixo, expressa como uma percentagem de 0 a 100.
+- **Tamanho da Grelha (*TrashGame.cs - gridSize*)**: Determina o número de células na grelha. O tamanho pode ser ajustado para diferentes valores, adequando-se às necessidades do jogo.
+- ***Seed* Aleatória (*TrashGame.cs - seeded* e *TrashGame.cs - seed*)**: Permite a utilização de uma *seed* específica para a geração aleatória da grelha, o que garante que a mesma configuração possa ser replicada em diferentes execuções do jogo.
+- **Probabilidade de Lixo (*TrashGame.cs - chanceForTrash*)**: Define a probabilidade de uma célula conter lixo, expressa como uma percentagem de 0 a 100.
 
 ![PLACEHOLDER PARA PARÂMETROS DA GRELHA]()
+
+#### **Modelo da Grelha**
+
+![PLACEHOLDER PARA MODELO DA GRELHA]()
+
+### Jogador
+
+O jogador pode ser controlado de duas formas: pelo jogador humano ou por um agente de IA. Ambas as formas partilham algumas funcionalidades comuns, mas diferem na forma como as ações são executadas e controladas.
+
+Ambos os jogadores, humano e IA, podem realizar as seguintes ações:
+
+- **Mover para a Direita:** Luso move-se uma célula para a direita.
+- **Mover para a Esquerda:** Luso move-se uma célula para a esquerda.
+- **Mover para Cima:** Luso move-se uma célula para cima.
+- **Mover para Baixo:** Luso move-se uma célula para baixo.
+- **Apanhar Lixo:** Luso apanha o lixo presente na célula onde se encontra.
+- **Permanecer Parado**: Luso não se move e mantém a sua posição atual.
+- **Mover Aleatoriamente:** Luso realiza um movimento aleatório entre as direções disponíveis, sem a possibilidade de ficar parado, pois um movimento tem de ter uma mudança de posição, ou neste caso célula, para ser considerado um movimento.
+
+Estas ações são registadas e atualizadas no jogo. A execução das ações influencia a pontuação do jogo, esta pontuação pode ser também negativa, caso o jogador realize ações que resultem em penalizações.
+
+- **Mover-se contra uma Parede:** Penaliza o jogador com -5 pontos.
+- **Apanhar Lixo:** Recompensa o jogador com 10 pontos.
+- **Tentar Apanhar Lixo numa Célula Vazia:** Penaliza o jogador com -1 ponto.
+
+O movimento do jogador pode ser instantâneo ou animado, dependendo da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição.
+
+#### **Parâmetros Configuráveis**
+
+No editor do Unity, podem ser configurados os seguintes parâmetros que afetam o comportamento do jogador:
+
+- **Máximo de Movimentos (*TrashGame.cs - maxMoves*):** Define o número máximo de movimentos que o jogador pode realizar numa sessão de jogo.
+- **Movimento Instantâneo do Jogador (*TrashGame.cs - playerInstantMovement*):** Permite que o movimento do jogador seja instantâneo, sem animações de transição.
+
+![PLACEHOLDER PARA PARÂMETROS DO JOGADOR]()
+
+#### **Modelo do Luso**
+
+![PLACEHOLDER PARA MODELO DO LUSO]()
+
+### **Modelo do lixo**
+
+![PLACEHOLDER PARA MODELO DO LIXO]()
+
+#### Jogador Humano
+
+O jogador humano controla o Luso utilizando as teclas WASD para movimentação e a tecla E para apanhar lixo. A tecla Espaço permite que o jogador permaneça parado, enquanto a tecla R faz com que o jogador se mova aleatoriamente numa das direções disponíveis.
+
+#### Jogador IA
+
+Enquanto o jogador humano controla Luso, o agente de IA regista as ações realizadas em cada situação específica da grelha. Luso está numa vizinhança de *Von Neumann* (4 vizinhos + célula atual), o que significa que pode ver a sua célula atual e as células adjacentes (cima, baixo, esquerda, direita). Estas células podem estar em três estados: vazia, com lixo ou parede, resultando em 162 situações diferentes possíveis.
+
+![PLACEHOLDER PARA VIZINHANÇA DE VON NEUMANN]()
+
+Essencialmente, o que o classificador *Naive Bayes* faz, neste caso, é, para cada uma destas situações, observar qual é a ação efetuada pelo humano, tentando depois replicar esse comportamento quando for a sua vez de jogar, por isso é importante que o jogador humano jogue um X número de vezes para a IA aprender com o seu comportamento.
+
+Quando a IA está a jogar, utiliza as probabilidades calculadas pelo classificador *Naive Bayes* para decidir a ação a tomar em cada passo. A IA realiza estas ações automaticamente com uma pausa de meio segundo entre cada passo, para "imitar" o comportamento previamente observado do jogador humano.
 
 ## Resultados e discussão
 
