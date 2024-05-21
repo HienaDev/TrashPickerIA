@@ -23,7 +23,7 @@ Este trabalho explora a aplicação do classificador *Naive Bayes* para determin
 
 Os *NPC*s no *Maze Chase* possuem características distintas e utilizam um sistema multi-agente para se comunicarem e coordenarem as suas ações. Este sistema multi-agente, parte da inteligência artificial, permite que os *NPCs* cooperem entre si para capturar o jogador de forma eficiente. A metodologia baseia-se na recolha de dados dos *NPCs* e do jogador em várias zonas do labirinto, utilizando esses dados para treinar o classificador *Naive Bayes*, que então determina a direção e os movimentos dos *NPCs*.
 
-Os resultados da implementação mostraram que o *Naive Bayes* é eficaz em prever os movimentos dos *NPCs*, resultando numa taxa de erro de apenas 0,5%. A precisão do classificador na decisão dos movimentos dos *NPCs* melhorou significativamente a jogabilidade e a complexidade do *Maze Chase*.
+Os resultados da implementação mostraram que o *Naive Bayes* é eficaz em prever os movimentos dos *NPCs*, resultando numa taxa de erro de apenas 0,5%. A precisão do classificador na decisão dos movimentos dos *NPCs* melhorou significativamente a jogabilidade e a complexidade do *Maze Chase*. [[1]](https://ieeexplore.ieee.org/abstract/document/9034640)
 
 ##### **Comparação com o nosso projeto**
 
@@ -42,3 +42,5 @@ Os resultados da implementação mostraram que o *Naive Bayes* é eficaz em prev
 ## Agradecimentos
 
 ## Referências
+
+[1] Zohro’iyah, H., Nasution, S., & Nugrahaeni, R. (2020, March 16). Determining NPC behavior in Maze Chase game using Naïve Bayes algorithm | IEEE conference publication | IEEE xplore. https://ieeexplore.ieee.org/abstract/document/9034640 
