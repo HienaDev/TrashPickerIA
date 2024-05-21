@@ -71,7 +71,7 @@ Ambos os jogadores, humano e IA, podem realizar as seguintes ações:
 - **Mover para Baixo:** Luso move-se uma célula para baixo.
 - **Apanhar Lixo:** Luso apanha o lixo presente na célula onde se encontra.
 - **Permanecer Parado**: Luso não se move e mantém a sua posição atual.
-- **Mover Aleatoriamente:** Luso realiza um movimento aleatório entre as direções disponíveis, sem a possibilidade de ficar parado, pois um movimento tem de ter uma mudança de posição, ou neste caso célula, para ser considerado um movimento.
+- **Mover Aleatoriamente:** Luso realiza um movimento aleatório entre as direções disponíveis, sem a possibilidade de ficar parado, pois logicamente só se usaria random quando estamos rodeados de tiles vazias então o *stay* não faria sentido neste caso
 
 Estas ações são registadas e atualizadas no jogo. A execução das ações influencia a pontuação do jogo, esta pontuação pode ser também negativa, caso o jogador realize ações que resultem em penalizações.
 
@@ -93,11 +93,11 @@ No editor do Unity, podem ser configurados os seguintes parâmetros que afetam o
 
 #### **Modelo do Luso**
 
-![PLACEHOLDER PARA MODELO DO LUSO]()
+![PLACEHOLDER PARA MODELO DO LUSO]() [2](https://trevor-pupkin.itch.io/tech-dungeon-roguelite)
 
 #### **Modelo do lixo**
 
-![PLACEHOLDER PARA MODELO DO LIXO]()
+![PLACEHOLDER PARA MODELO DO LIXO]() [3](https://btl-games.itch.io/trash-and-junk-asset-pack)
 
 ### Jogador Humano
 
@@ -121,6 +121,28 @@ Os seguintes parâmetros da IA podem ser definidos no editor do Unity:
 
 ![PLACEHOLDER PARA PARÂMETROS DA IA]()
 
+### UI
+
+A UI permite iniciar o jogo, escolher o modo de jogo (jogador humano ou IA), e visualizar a pontuação e outras informações relevantes durante a sessão de jogo.
+
+O menu principal, apresenta botões que permitem ao jogador iniciar o jogo com um jogador humano ou com a IA, bem como sair do jogo.
+
+Botões de Início de Jogo:
+
+- **Iniciar com Jogador Humano (*ButtonsManager - StartWithHuman*):** Inicia o jogo com controlo humano. Define AI como *false* e inicia o jogo.
+- **Iniciar com IA (*ButtonsManager - StartWithAI*):** Inicia o jogo com controlo da IA. Define AI como *true* e inicia o jogo.
+- **Botão de Sair (*ButtonsManager - QuitGame*):** Fecha o jogo se estiver a ser executado como uma aplicação *standalone*, ou termina a execução se estiver no editor do Unity.
+
+![PLACEHOLDER PARA UI NO MENU PRINCIPAL]()
+
+Os botões do menu são desativados uma vez que o jogo começa, prevenindo interferências durante a sessão de jogo. Dentro o é exibido a pontuação, o número de movimentos restantes durante o jogo, movimentos feitos pelo jogador / movimentos máximos e o número de observações feitas pela IA.
+
+![PLACEHOLDER PARA UI DENTRO DE JOGO]()
+
+Quando o jogo termina, a UI exibe a pontuação final do jogador, destacando o desempenho obtido, juntamente com as 6 melhores pontuações obtidas naquela sessão de jogo. E voltam a ser ativados os botões do menu principal.
+
+![PLACEHOLDER PARA UI DE FIM DE JOGO]()
+
 ## Resultados e discussão
 
 ## Conclusão
@@ -130,3 +152,5 @@ Os seguintes parâmetros da IA podem ser definidos no editor do Unity:
 ## Referências
 
 [1] Zohro’iyah, H., Nasution, S., & Nugrahaeni, R. (2020, March 16). Determining NPC behavior in Maze Chase game using Naïve Bayes algorithm | IEEE conference publication | IEEE xplore. https://ieeexplore.ieee.org/abstract/document/9034640 
+[2] Pupkin. (2021, September 23). Tech Dungeon: Roguelite - Asset Pack by pupkin. itch.io. https://trevor-pupkin.itch.io/tech-dungeon-roguelite 
+[3] BTL Games. (2021, September 10). Trash and Junk Asset Pack by BTL Games. itch.io. https://btl-games.itch.io/trash-and-junk-asset-pack
