@@ -155,6 +155,18 @@ Os resultados mostram que, com observações suficiente, a IA pode replicar efic
 
 ### Discussão
 
+Durante o desenvolvimento do projeto, foram identificados alguns resultados inesperados e hipóteses explicativas que ajudam e ajudaram a compreender o comportamento da IA e os resultados obtidos.
+
+#### **Resultados Inesperados**
+
+- **Distribuição do Lixo:** A distribuição aleatória do lixo na grelha afetou significativamente as pontuações, tornando mais difícil alcançar pontuações elevadas em algumas execuções.
+- **Cenários de Limite:** Nas grelhas com poucas células de lixo ou com lixo concentrado em áreas específicas, a IA teve dificuldade em otimizar os movimentos, mesmo após um treino adequado.
+
+#### **Hipóteses Explicativas**
+
+- **Aleatoriedade:** A variabilidade nos resultados deve-se à distribuição aleatória do lixo, que afeta as oportunidades de maximização da pontuação.
+- **Limitações do Algoritmo:** O classificador *Naive Bayes*, embora eficaz, mostra limitações em cenários específicos, especialmente onde a otimização do caminho é crítica.
+
 ## Conclusão
 
 ## Agradecimentos
