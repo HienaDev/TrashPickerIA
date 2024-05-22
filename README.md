@@ -176,10 +176,11 @@ Os seguintes parâmetros da IA podem ser definidos no editor do Unity:
 
 A UI permite iniciar o jogo, escolher o modo de jogo (jogador humano ou IA), e visualizar a pontuação e outras informações relevantes durante a sessão de jogo.
 
-O menu principal, apresenta botões que permitem ao jogador iniciar o jogo com um jogador humano ou com a IA, bem como sair do jogo.
+O menu principal, apresenta botões que permitem ao jogador mostrar as melhores pontuações, iniciar o jogo com um jogador humano ou com a IA, bem como sair do jogo.
 
 #### **Botões de Início de Jogo:**
 
+- **Melhores Pontuações (*ButtonsManager - Leaderboard*):** Exibe as 6 melhores pontuações obtidas na sessão de jogo atual.
 - **Iniciar com Jogador Humano (*ButtonsManager - StartWithHuman*):** Inicia o jogo com controlo humano. Define AI como *false* e inicia o jogo.
 - **Iniciar com IA (*ButtonsManager - StartWithAI*):** Inicia o jogo com controlo da IA. Define AI como *true* e inicia o jogo.
 - **Botão de Sair (*ButtonsManager - QuitGame*):** Fecha o jogo se estiver a ser executado como uma aplicação *standalone*, ou termina a execução se estiver no editor do Unity.
