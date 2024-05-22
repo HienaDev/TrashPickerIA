@@ -158,6 +158,8 @@ Enquanto o jogador humano controla Luso, o agente de IA regista as ações reali
 
 ![Modelo de Vizinhança de Von Neumann](./Images/VonNeumann.png)
 
+A situação referida na segunda imagem só acontece caso a grelha seja 1x1, e numa situação onde o jogador está rodeado por três paredes nunca acontece, de resto todas as situações são possíveis.
+
 Essencialmente, o que o classificador *Naive Bayes* faz, neste caso, é, para cada uma destas situações, observar qual é a ação efetuada pelo humano, tentando depois replicar esse comportamento quando for a sua vez de jogar, por isso é importante que o jogador humano jogue um X número de vezes para a IA aprender com o seu comportamento.
 
 Quando a IA está a jogar, utiliza as probabilidades calculadas pelo classificador *Naive Bayes* para decidir a ação a tomar em cada passo. A IA realiza estas ações automaticamente com uma pausa definida pelo utilizador (*PlayerMovement - timeForEachAITurn*) entre cada passo, para "imitar" o comportamento previamente observado do jogador humano.
@@ -208,12 +210,12 @@ Durante o desenvolvimento do projeto, foram identificados alguns resultados ines
 
 #### **Resultados Inesperados**
 
-- **Distribuição do Lixo:** A distribuição aleatória do lixo na grelha afetou significativamente as pontuações, tornando mais difícil alcançar pontuações elevadas em algumas execuções.
+- **Distribuição do Lixo:** A distribuição aleatória do lixo na grelha afetou significativamente as pontuações, tornando mais difícil alcançar pontuações elevadas em algumas execuções, este problema acontece maioritariamente quando a IA não tem lixo nenhum à sua volta, ou seja, as 5 tiles estão vazias.
 - **Cenários de Limite:** Nas grelhas com poucas células de lixo ou com lixo concentrado em áreas específicas, a IA teve dificuldade em otimizar os movimentos, mesmo após um treino adequado.
 
 #### **Hipóteses Explicativas**
 
-- **Aleatoriedade:** A variabilidade nos resultados deve-se à distribuição aleatória do lixo, que afeta as oportunidades de maximização da pontuação.
+- **Aleatoriedade:** A variabilidade nos resultados deve-se à distribuição aleatória do lixo, que afeta as oportunidades de maximização da pontuação. Em casos onde não há lixo à volta da IA, devemos usar o movimento aleatório para tentar melhorar os seus resultados.
 - **Limitações do Algoritmo:** O classificador *Naive Bayes*, embora eficaz, mostra limitações em cenários específicos, especialmente onde a otimização do caminho é crítica.
 
 ## Conclusão
