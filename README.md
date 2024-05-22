@@ -128,7 +128,7 @@ Estas ações são registadas e atualizadas no jogo. A execução das ações in
 - **Apanhar Lixo:** Recompensa o jogador com 10 pontos.
 - **Tentar Apanhar Lixo numa Célula Vazia:** Penaliza o jogador com -1 ponto.
 
-O movimento do jogador pode ser instantâneo ou animado, que depende da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição. O jogador pode ainda definir o tempo da animação de movimento (*PlayerMovement.cs - howMuchToMovePerFrame*) definindo o número de frames necessários para completar um movimento, quanto maior o número de frames, mais rápida será a animação.
+O movimento do jogador pode ser instantâneo ou animado, que depende da configuração definida pelo utilizador (*TrashGame.cs - playerInstantMovement*). A opção de movimento instantâneo permite que o jogador se mova sem animações de transição. O jogador pode ainda definir a velocidade da animação (*PlayerMovement.cs - howMuchToMovePerFrame*), que mantem a velocidade constante em frame rates diferentes.
 
 #### **Parâmetros Configuráveis**
 
@@ -154,7 +154,7 @@ O jogador humano controla o Luso utilizando as teclas WASD para movimentação e
 
 ### Jogador IA
 
-Enquanto o jogador humano controla Luso, o agente de IA regista as ações realizadas em cada situação específica da grelha. Luso está numa vizinhança de *Von Neumann* (4 vizinhos + célula atual), o que significa que pode ver a sua célula atual e as células adjacentes (cima, baixo, esquerda, direita). Estas células podem estar em três estados: vazia, com lixo ou parede, resultando em 162 situações diferentes possíveis.
+Enquanto o jogador humano controla Luso, o agente de IA regista as ações realizadas em cada situação específica da grelha. Luso está numa vizinhança de *Von Neumann* (4 vizinhos + célula atual), o que significa que pode ver a sua célula atual e as células adjacentes (cima, baixo, esquerda, direita). Estas células podem estar em três estados: vazia, com lixo ou parede, exceto a célula do meio que nunca pode ser o estado parede, porque o jogador não pode estar entre paredes.
 
 ![Modelo de Vizinhança de Von Neumann](./Images/VonNeumann.png)
 
@@ -186,7 +186,7 @@ O menu principal, apresenta botões que permitem ao jogador iniciar o jogo com u
 
 ![Menu Principal](./Images/UIMainMenu.png)
 
-Os botões do menu são desativados uma vez que o jogo começa, prevenindo interferências durante a sessão de jogo. Dentro o é exibido a pontuação, o número de movimentos restantes durante o jogo, movimentos feitos pelo jogador / movimentos máximos e o número de observações feitas pela IA.
+Os botões do menu são desativados uma vez que o jogo começa, prevenindo interferências durante a sessão de jogo. Dentro é exibido a pontuação, o número de movimentos restantes durante o jogo, movimentos feitos pelo jogador / movimentos máximos e o número de observações feitas pela IA.
 
 ![UI de Jogo](./Images/UIInGame.png)
 
