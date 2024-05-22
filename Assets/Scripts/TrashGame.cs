@@ -304,6 +304,9 @@ public class TrashGame : MonoBehaviour
         aiObservationsUI.text = $"AI Observations: {aiObservations}";
     }
 
+    /// <summary>
+    /// Displays the top 6 scores on the screen
+    /// </summary>
     public void DisplayLeaderboard()
     {
         if(!bestScoresLeaderboardUI.gameObject.activeSelf)
@@ -380,6 +383,7 @@ public class TrashGame : MonoBehaviour
             }
 
             bestScoresUI.text = bestScoreText;
+            bestScoresLeaderboardUI.text = bestScoreText;   
             GameOver = true;
             return true;
         }
