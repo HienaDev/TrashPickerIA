@@ -77,6 +77,21 @@ public class TrashGame : MonoBehaviour
     [SerializeField] private GameObject gameOverUI;
 
     /// <summary>
+    /// Show best scores on the UI.
+    /// </summary>
+    public TextMeshProUGUI BestScoresLeaderboardUI => bestScoresLeaderboardUI;
+
+    /// <summary>
+    /// The best scores.
+    /// </summary>
+    public int[] BestScores => bestScores;
+
+    /// <summary>
+    /// The score of the game.
+    /// </summary>
+    public int Score => score;
+
+    /// <summary>
     /// Boolean to check if the game is over.
     /// </summary>
     /// <value> States if the game is over. </value>
@@ -302,35 +317,6 @@ public class TrashGame : MonoBehaviour
 
         aiObservations++;
         aiObservationsUI.text = $"AI Observations: {aiObservations}";
-    }
-
-    /// <summary>
-    /// Displays the top 6 scores on the screen
-    /// </summary>
-    public void DisplayLeaderboard()
-    {
-        if(!bestScoresLeaderboardUI.gameObject.activeSelf)
-        {
-            bestScoresLeaderboardUI.gameObject.SetActive(true);
-
-            string bestScoreText = "Best Scores:\n";
-
-            for (int i = 0; i < bestScores.Length; i++)
-            {
-                bestScoreText += $"{i + 1} - ";
-
-                if (bestScores[i] == score)
-                    bestScoreText += $"<color=#FFFF00>{bestScores[i]}</color>\n";
-                else if (bestScores[i] != -1000000)
-                    bestScoreText += $"{bestScores[i]}\n";
-                else
-                    bestScoreText += $"___\n";
-            }
-
-            bestScoresLeaderboardUI.text = bestScoreText;
-        }
-        else
-            bestScoresLeaderboardUI.gameObject.SetActive(false);
     }
 
     /// <summary>

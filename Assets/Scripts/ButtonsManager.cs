@@ -20,6 +20,35 @@ public class ButtonsManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Displays the top 6 scores on the screen
+    /// </summary>
+    public void DisplayLeaderboard()
+    {
+        if(!trashScript.BestScoresLeaderboardUI.gameObject.activeSelf)
+        {
+            trashScript.BestScoresLeaderboardUI.gameObject.SetActive(true);
+
+            string bestScoreText = "Best Scores:\n";
+
+            for (int i = 0; i < trashScript.BestScores.Length; i++)
+            {
+                bestScoreText += $"{i + 1} - ";
+
+                if (trashScript.BestScores[i] == trashScript.Score)
+                    bestScoreText += $"<color=#FFFF00>{trashScript.BestScores[i]}</color>\n";
+                else if (trashScript.BestScores[i] != -1000000)
+                    bestScoreText += $"{trashScript.BestScores[i]}\n";
+                else
+                    bestScoreText += $"___\n";
+            }
+
+            trashScript.BestScoresLeaderboardUI.text = bestScoreText;
+        }
+        else
+            trashScript.BestScoresLeaderboardUI.gameObject.SetActive(false);
+    }
+
+    /// <summary>
     /// Start the game with a human player.
     /// </summary>
     public void StartWithHuman()
