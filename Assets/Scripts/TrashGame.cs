@@ -73,6 +73,7 @@ public class TrashGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI movesUI;
     [SerializeField] private TextMeshProUGUI aiObservationsUI;
     [SerializeField] private TextMeshProUGUI bestScoresUI;
+    [SerializeField] private TextMeshProUGUI bestScoresLeaderboardUI;
     [SerializeField] private GameObject gameOverUI;
 
     /// <summary>
@@ -301,6 +302,32 @@ public class TrashGame : MonoBehaviour
 
         aiObservations++;
         aiObservationsUI.text = $"AI Observations: {aiObservations}";
+    }
+
+    public void DisplayLeaderboard()
+    {
+        if(!bestScoresLeaderboardUI.gameObject.activeSelf)
+        {
+            bestScoresLeaderboardUI.gameObject.SetActive(true);
+
+            string bestScoreText = "Best Scores:\n";
+
+            for (int i = 0; i < bestScores.Length; i++)
+            {
+                bestScoreText += $"{i + 1} - ";
+
+                if (bestScores[i] == score)
+                    bestScoreText += $"<color=#FFFF00>{bestScores[i]}</color>\n";
+                else if (bestScores[i] != -1000000)
+                    bestScoreText += $"{bestScores[i]}\n";
+                else
+                    bestScoreText += $"___\n";
+            }
+
+            bestScoresLeaderboardUI.text = bestScoreText;
+        }
+        else
+            bestScoresLeaderboardUI.gameObject.SetActive(false);
     }
 
     /// <summary>
